@@ -1,8 +1,8 @@
 "use client";
 
+import { commonClasses } from "@/design-system";
 import { useState } from "react";
 import { Toast } from "./Toast";
-import { commonClasses } from "@/design-system";
 
 export const EmailSignup = () => {
   const [email, setEmail] = useState("");
@@ -132,7 +132,7 @@ export const EmailSignup = () => {
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            <span className="text-ds-text dark:text-ds-dark-text-primary font-medium">
+            <span className=" dark:text-ds-dark-text-primary font-medium">
               Success! We&apos;ll be in touch soon.
             </span>
           </div>
