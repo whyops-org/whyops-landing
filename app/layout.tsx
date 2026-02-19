@@ -61,8 +61,8 @@ export const metadata: Metadata = {
     images: [ogImage],
   },
   icons: {
-    icon: "/WhyOpsLogo.svg",
-    shortcut: "/WhyOpsLogo.svg",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
     apple: "/WhyOpsLogo.svg",
   },
   formatDetection: {
