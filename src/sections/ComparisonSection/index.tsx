@@ -16,7 +16,7 @@ export const ComparisonSection = () => {
   ];
 
   return (
-    <section className={`${commonClasses.section} bg-[${colors.background.secondary}] dark:bg-[${colors.dark.background.DEFAULT}]`}>
+    <section className={`${commonClasses.section} bg-ds-backgroundSecondary dark:bg-ds-dark-background`}>
       <div className={commonClasses.container}>
         <div className={`box-border caret-transparent ${spacing.section.mobile.px} ${spacing.section.mobile.py} ${spacing.section.desktop.py}`}>
           <motion.div
@@ -40,7 +40,7 @@ export const ComparisonSection = () => {
                 transition={{ duration: animations.duration.slow, delay: index * 0.1 }}
                 className={commonClasses.card + ' p-6'}
               >
-                <h3 className={`text-base font-medium mb-2 dark:text-[${colors.dark.text.primary}]`}>
+                <h3 className="text-base font-medium mb-2 dark:text-ds-dark-text-primary">
                   {competitor.name}
                 </h3>
                 <p className={`${commonClasses.muted} text-sm leading-5`}>
@@ -56,7 +56,7 @@ export const ComparisonSection = () => {
             transition={{ duration: animations.duration.slower, delay: 0.4 }}
             className="mb-12"
           >
-            <h3 className={`text-2xl md:text-3xl font-medium mb-4 dark:text-[${colors.dark.text.primary}] font-${typography.fontFamily.display}`}>
+            <h3 className="text-2xl md:text-3xl font-medium mb-4 dark:text-ds-dark-text-primary font-f37stout">
               {content.comparison.subtitle}
             </h3>
             <p className={`${commonClasses.body} text-base leading-6 max-w-2xl`}>
@@ -72,17 +72,17 @@ export const ComparisonSection = () => {
           >
             <table className="w-full border-collapse">
               <thead>
-                <tr className={`border-b border-[${colors.border.DEFAULT}] dark:border-[${colors.dark.border.secondary}]`}>
-                  <th className={`text-left py-4 px-4 text-sm font-medium dark:text-[${colors.dark.text.primary}]`}>
+                <tr className="border-b border-ds-border dark:border-ds-dark-borderSecondary">
+                  <th className="text-left py-4 px-4 text-sm font-medium dark:text-ds-dark-text-primary">
                     Capability
                   </th>
-                  <th className={`text-center py-4 px-4 text-sm font-medium dark:text-[${colors.dark.text.primary}]`}>
+                  <th className="text-center py-4 px-4 text-sm font-medium dark:text-ds-dark-text-primary">
                     LangSmith
                   </th>
-                  <th className={`text-center py-4 px-4 text-sm font-medium dark:text-[${colors.dark.text.primary}]`}>
+                  <th className="text-center py-4 px-4 text-sm font-medium dark:text-ds-dark-text-primary">
                     Langfuse
                   </th>
-                  <th className={`text-center py-4 px-4 text-sm font-medium dark:text-[${colors.dark.text.primary}]`}>
+                  <th className="text-center py-4 px-4 text-sm font-medium dark:text-ds-dark-text-primary">
                     WhyOps
                   </th>
                 </tr>
@@ -91,21 +91,21 @@ export const ComparisonSection = () => {
                 {comparisonData.map((row) => (
                   <tr
                     key={row.feature}
-                    className={`border-b border-[${colors.border.DEFAULT}] dark:border-[${colors.dark.border.secondary}]`}
+                    className="border-b border-ds-border dark:border-ds-dark-borderSecondary"
                   >
-                    <td className={`py-4 px-4 text-sm dark:text-[${colors.dark.text.secondary}]`}>
+                    <td className="py-4 px-4 text-sm dark:text-ds-dark-text-secondary">
                       {row.feature}
                     </td>
                     <td className="py-4 px-4 text-center">
-                      <X className="w-4 h-4 text-red-600 dark:text-red-400 mx-auto" />
+                      <X className="w-4 h-4 text-status-error dark:text-status-errorDark mx-auto" />
                     </td>
                     <td className="py-4 px-4 text-center">
-                      <X className="w-4 h-4 text-red-600 dark:text-red-400 mx-auto" />
+                      <X className="w-4 h-4 text-status-error dark:text-status-errorDark mx-auto" />
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center justify-center gap-2">
-                        <Check className="w-4 h-4 text-green-600 dark:text-green-400 flex-shrink-0" />
-                        <span className={`text-sm dark:text-[${colors.dark.text.secondary}]`}>
+                        <Check className="w-4 h-4 text-status-success dark:text-status-successDark flex-shrink-0" />
+                        <span className="text-sm dark:text-ds-dark-text-secondary">
                           {row.whyops}
                         </span>
                       </div>

@@ -31,7 +31,7 @@ export const ProblemSection = () => {
             transition={{ duration: animations.duration.slower, delay: 0.2 }}
             className="mb-16 md:mb-20"
           >
-            <h3 className={`text-sm font-medium box-border caret-transparent leading-5 mb-8 ${commonClasses.muted} font-${typography.fontFamily.mono}`}>
+            <h3 className={`text-sm font-medium box-border caret-transparent leading-5 mb-8 ${commonClasses.muted} font-geist_mono`}>
               {content.problem.sectionTitle}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -43,7 +43,7 @@ export const ProblemSection = () => {
                   transition={{ duration: animations.duration.slow, delay: 0.3 + index * 0.1 }}
                   className={commonClasses.card + ' p-6'}
                 >
-                  <h4 className={`text-base font-medium mb-3 dark:text-[${colors.dark.text.primary}]`}>
+                  <h4 className="text-base font-medium mb-3 dark:text-ds-dark-text-primary">
                     {challenge.title}
                   </h4>
                   <p className={`${commonClasses.body} text-sm leading-5 mb-4`}>
@@ -52,7 +52,7 @@ export const ProblemSection = () => {
                   <div className="space-y-2">
                     {challenge.issues.map((issue) => (
                       <div key={issue} className="flex items-start gap-2">
-                        <span className="text-red-600 dark:text-red-400 text-sm mt-0.5">✖</span>
+                        <span className="text-status-error dark:text-status-errorDark text-sm mt-0.5">✖</span>
                         <span className={`${commonClasses.muted} text-sm leading-5`}>
                           {issue}
                         </span>
@@ -69,7 +69,7 @@ export const ProblemSection = () => {
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: animations.duration.slower, delay: 0.6 }}
           >
-            <h3 className={`text-2xl md:text-3xl font-medium mb-4 dark:text-[${colors.dark.text.primary}] font-${typography.fontFamily.display}`}>
+            <h3 className="text-2xl md:text-3xl font-medium mb-4 dark:text-ds-dark-text-primary font-f37stout">
               {content.problem.cost.title}
             </h3>
             <p className={`${commonClasses.body} text-base leading-6 mb-12 max-w-2xl`}>
@@ -83,7 +83,7 @@ export const ProblemSection = () => {
                   animate={isVisible ? { opacity: 1, scale: 1 } : {}}
                   transition={{ duration: animations.duration.slow, delay: 0.8 + index * 0.1 }}
                 >
-                  <div className={`text-4xl md:text-5xl font-medium mb-3 dark:text-[${colors.dark.text.primary}] font-${typography.fontFamily.display}`}>
+                  <div className="text-4xl md:text-5xl font-medium mb-3 dark:text-ds-dark-text-primary font-f37stout">
                     {item.time}
                   </div>
                   <p className={`${commonClasses.muted} text-sm leading-5`}>

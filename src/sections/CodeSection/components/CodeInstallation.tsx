@@ -71,7 +71,7 @@ export const CodeInstallation = () => {
           Copy
         </span>
         {copied ? (
-          <Check className="h-4 w-4 text-green-600" />
+          <Check className="h-4 w-4 text-status-success" />
         ) : (
           <Copy className={`h-4 w-4 text-[${colors.text.tertiary}]`} />
         )}

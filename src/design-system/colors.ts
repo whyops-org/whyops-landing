@@ -38,9 +38,13 @@ export const colors = {
   // Status colors
   status: {
     success: 'lab(69.2659 -47.9201 46.2781)',
+    successDark: 'lab(69.2659 -47.9201 46.2781)',
     error: 'lab(55.4814 75.0732 48.8528)',
+    errorDark: 'lab(70 50 45)',
     warning: 'lab(76.3898 14.5258 98.4589)',
+    warningDark: 'lab(75 20 80)',
     info: 'lab(70.5521 -66.5147 45.8073)',
+    infoDark: 'lab(70 -50 40)',
   },
   
   // Semantic colors

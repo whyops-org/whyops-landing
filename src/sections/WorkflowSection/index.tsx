@@ -12,25 +12,25 @@ export const WorkflowSection = () => {
       icon: AlertCircle,
       label: content.workflow.steps[0].label,
       title: content.workflow.steps[0].title,
-      color: 'text-red-600 dark:text-red-400',
+      color: 'text-status-error dark:text-status-errorDark',
     },
     {
       icon: Lightbulb,
       label: content.workflow.steps[1].label,
       title: content.workflow.steps[1].title,
       subtitle: content.workflow.steps[1].subtitle,
-      color: 'text-yellow-600 dark:text-yellow-400',
+      color: 'text-status-warning dark:text-status-warningDark',
     },
     {
       icon: CheckCircle,
       label: content.workflow.steps[2].label,
       title: content.workflow.steps[2].title,
-      color: 'text-green-600 dark:text-green-400',
+      color: 'text-status-success dark:text-status-successDark',
     },
   ];
 
   return (
-    <section className={`${commonClasses.section} bg-[${colors.background.secondary}] dark:bg-[${colors.dark.background.DEFAULT}]`}>
+    <section className={`${commonClasses.section} bg-ds-backgroundSecondary dark:bg-ds-dark-background`}>
       <div className={commonClasses.container}>
         <div className={`box-border caret-transparent ${spacing.section.mobile.px} ${spacing.section.mobile.py} ${spacing.section.desktop.py}`}>
           <motion.div
@@ -59,7 +59,7 @@ export const WorkflowSection = () => {
                   <div className={commonClasses.card + ' p-6'}>
                     <div className="flex items-center gap-3 mb-4">
                       <Icon className={`w-5 h-5 ${step.color}`} />
-                      <span className={`text-xs font-medium ${commonClasses.muted} font-${typography.fontFamily.mono}`}>
+                      <span className={`text-xs font-medium ${commonClasses.muted} font-geist_mono`}>
                         {step.label}
                       </span>
                     </div>
@@ -74,7 +74,7 @@ export const WorkflowSection = () => {
                   </div>
                   {index < steps.length - 1 && (
                     <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={`text-[${colors.border.strong}] dark:text-[${colors.dark.border.tertiary}]`}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-ds-borderStrong dark:text-ds-dark-borderTertiary">
                         <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
