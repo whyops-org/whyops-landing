@@ -80,6 +80,9 @@ module.exports = {
           textDisabled: 'oklab(0.145 -0.00000143796 0.00000340492 / 0.6)',
           textInverse: 'lab(98.26 0 0)',
           textCode: 'lab(48.496 0 0)',
+          textMono: 'oklab(0.145 -0.00000143796 0.00000340492 / 0.6)',
+          backgroundOverlay: 'oklab(0.969998 -0.00000959635 0.0000227094 / 0.5)',
+          text: 'lab(2.75381 0 0)',
           border: 'oklab(0.205 -0.00000207871 0.00000478327 / 0.1)',
           borderSecondary: 'oklab(0.205 -0.00000207871 0.00000478327 / 0.2)',
           borderTertiary: 'lab(90.952 0 -0.0000119209)',
@@ -98,11 +101,18 @@ module.exports = {
             textSecondary: 'lab(90 0 0)',
             textTertiary: 'oklab(0.7 0 0 / 0.7)',
             border: 'oklab(0.8 0 0 / 0.1)',
-            borderSecondary: 'oklab(0.8 0 0 / 0.2)',
+           borderSecondary: 'oklab(0.8 0 0 / 0.2)',
+            backgroundOverlay: 'oklab(0.1 0 0 / 0.5)',
           },
         },
-      },
-      borderRadius: {
+       },
+       boxShadow: {
+         'ds-sm': '0px 0px 0px 1px oklab(0.921998 -0.00000908971 0.0000215769 / 0.3)',
+         'ds-button': '0px 0px 0px 2px oklab(0.205 -0.00000207871 0.00000478327 / 0.2)',
+         'ds-success-indicator': '0px 0px 0px 2px lab(98.84 0.0000298023 -0.0000119209)',
+         'ds-lg': '0px 25px 50px -12px rgba(0,0,0,0.25)',
+       },
+       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
@@ -117,9 +127,9 @@ module.exports = {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
         ],
-        "geist": ["Geist", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
-        "geist_mono": ["Geist Mono", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
-        "f37stout": ["F37Stout", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
+        "geist": ["Inter", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
+        "geist_mono": ["JetBrains Mono", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
+        "f37stout": ["Space Grotesk", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
       },
       keyframes: {
         "accordion-down": {

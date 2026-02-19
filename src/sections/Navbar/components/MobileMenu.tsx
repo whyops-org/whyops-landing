@@ -26,16 +26,16 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={animations.easing.spring}
-            className={`fixed right-0 top-0 bottom-0 w-[280px] bg-[${colors.background.DEFAULT}] dark:bg-[${colors.dark.background.secondary}] border-l border-[${colors.border.DEFAULT}] dark:border-[${colors.dark.border.secondary}] z-50 shadow-xl`}
+            className={`fixed right-0 top-0 bottom-0 w-[280px] bg-ds-background dark:bg-ds-dark-backgroundSecondary border-l border-ds-border dark:border-ds-dark-borderSecondary z-50 shadow-xl`}
           >
             <div className="flex flex-col h-full">
-              <div className={`flex items-center justify-between p-4 border-b border-[${colors.border.DEFAULT}] dark:border-[${colors.dark.border.secondary}]`}>
-                <span className={`text-[${colors.primary.DEFAULT}] dark:text-[${colors.dark.text.primary}] text-xl font-${typography.fontFamily.display}`}>
+              <div className={`flex items-center justify-between p-4 border-b border-ds-border dark:border-ds-dark-borderSecondary`}>
+                <span className={`text-primary dark:text-ds-dark-text-primary text-xl font-${typography.fontFamily.display}`}>
                   Menu
                 </span>
                 <button
                   onClick={onClose}
-                  className={`p-2 hover:bg-[${colors.background.tertiary}] ${borders.radius.sm} ${animations.transitions.colors}`}
+                  className={`p-2 hover:bg-ds-backgroundTertiary dark:hover:bg-ds-dark-backgroundTertiary ${borders.radius.sm} ${animations.transitions.colors}`}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -46,16 +46,16 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                     key={link.href}
                     href={link.href}
                     onClick={onClose}
-                    className={`text-sm font-medium py-3 px-4 hover:bg-[${colors.background.tertiary}] dark:hover:bg-[${colors.dark.background.hover}] ${borders.radius.sm} ${animations.transitions.colors} text-[${colors.text.primary}] dark:text-[${colors.dark.text.secondary}]`}
+                    className={`text-sm font-medium py-3 px-4 hover:bg-ds-backgroundTertiary dark:hover:bg-ds-dark-backgroundTertiary ${borders.radius.sm} ${animations.transitions.colors} text-ds-textPrimary dark:text-ds-dark-textSecondary`}
                   >
                     {link.text}
                   </a>
                 ))}
-                <div className={`border-t border-[${colors.border.DEFAULT}] dark:border-[${colors.dark.border.secondary}] my-2`}></div>
+                <div className={`border-t border-ds-border dark:border-ds-dark-borderSecondary my-2`}></div>
                 <a
                   href="#early-access"
                   onClick={onClose}
-                  className={`text-sm font-medium bg-[${colors.primary.DEFAULT}] dark:bg-[${colors.dark.text.primary}] text-[${colors.primary.foreground}] dark:text-[${colors.primary.DEFAULT}] py-3 px-4 ${borders.radius.sm} ${animations.hover.opacityHigh} ${animations.transitions.all} text-center`}
+                  className={`text-sm font-medium bg-primary dark:bg-ds-dark-text-primary text-primary-foreground dark:text-ds-dark-background py-3 px-4 ${borders.radius.sm} ${animations.hover.opacityHigh} ${animations.transitions.all} text-center`}
                 >
                   {content.cta.primary}
                 </a>

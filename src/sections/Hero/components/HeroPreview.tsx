@@ -1,40 +1,44 @@
-import { motion } from 'framer-motion';
 import { BrowserMockup } from "@/sections/Hero/components/BrowserMockup";
+import { motion } from 'framer-motion';
 
-export const HeroPreview = () => {
+const PREVIEW_IMAGE_URL = "/assets/widget-bg-1.jpg";
+
+export const HeroPreview = ({ imagePath = PREVIEW_IMAGE_URL }) => {
   return (
-    <div className="relative items-center box-border caret-transparent hidden justify-center min-h-0 min-w-0 w-full border-[oklab(0.205_-0.00000207871_0.00000478327_/_0.1)] overflow-hidden border-b border-t border-dashed md:block md:min-h-[auto] md:min-w-[auto]">
+    <div className="relative items-center box-border caret-transparent hidden justify-center min-h-[500px] w-full border-ds-border dark:border-ds-dark-border overflow-hidden border-b border-t border-dashed md:flex md:min-h-[600px] lg:min-h-[700px] md:max-h-[60dvh] md:px-6 md:py-6">
       <div className="absolute box-border caret-transparent z-0 inset-0">
         <picture className="absolute box-border caret-transparent block inset-0">
           <img
-            alt="Cossistant Background"
+            alt="WhyOps Background"
             sizes="100vw"
-            src="https://c.animaapp.com/mlnjf5yy2zLUvi/assets/18.jpg"
-            className="aspect-[auto_1920_/_1080] box-border caret-transparent grayscale-[0.5] h-full max-w-full object-cover object-[50%_0%] w-full md:object-[50%_50%]"
+            src="/assets/hero-bg-1.jpg"
+            className="aspect-[auto_1920_/_1080] box-border caret-transparent grayscale-[0.5] h-full max-w-full object-cover object-center w-full"
           />
         </picture>
         <div className="absolute box-border caret-transparent h-full w-full overflow-hidden inset-0">
           <img
-            alt="Cossistant Background"
+            alt="WhyOps Background"
             sizes="100vw"
-            src="https://c.animaapp.com/mlnjf5yy2zLUvi/assets/20.jpg"
+            src="/assets/hero-bg-2.jpg"
             className="absolute text-transparent box-border h-full max-w-full object-cover w-full inset-0"
           />
-          <div className="static [align-items:normal] box-content caret-black block justify-normal mix-blend-normal opacity-100 pointer-events-auto inset-auto md:absolute md:items-center md:aspect-auto md:box-border md:caret-transparent md:flex md:justify-center md:mix-blend-multiply md:opacity-30 md:overscroll-x-auto md:overscroll-y-auto md:pointer-events-none md:snap-align-none md:snap-normal md:snap-none md:decoration-auto md:underline-offset-auto md:[mask-position:0%] md:bg-left-top md:scroll-m-0 md:scroll-p-[auto] md:inset-0">
+          <div className="absolute items-center box-border caret-transparent flex justify-center mix-blend-multiply opacity-30 pointer-events-none inset-0">
             <img
-              src="https://c.animaapp.com/mlnjf5yy2zLUvi/assets/image-1.png"
-              className="box-content caret-black h-auto max-w-none min-h-0 min-w-0 w-auto md:aspect-[auto_2552_/_1694] md:box-border md:caret-transparent md:h-[847px] md:max-w-full md:min-h-[auto] md:min-w-[auto] md:overscroll-x-auto md:overscroll-y-auto md:snap-align-none md:snap-normal md:snap-none md:decoration-auto md:underline-offset-auto md:w-[1276px] md:[mask-position:0%] md:bg-left-top md:scroll-m-0 md:scroll-p-[auto]"
+              src="/assets/hero-overlay-1.png"
+              alt="Overlay"
+              className="box-border caret-transparent h-auto max-w-full w-auto"
             />
           </div>
         </div>
       </div>
-      <div className="relative items-center box-border caret-transparent flex basis-[0%] grow justify-center z-10">
+      <div className="relative items-center box-border caret-transparent flex justify-center z-10 w-full h-full">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="h-full w-full"
         >
-          <BrowserMockup />
+          <BrowserMockup imageUrl={imagePath} />
         </motion.div>
       </div>
     </div>

@@ -154,16 +154,18 @@ export const content = {
       {
         title: 'Resources',
         links: [
-          { href: 'https://whyops.com/docs', text: 'Docs', external: true },
-          { href: 'https://whyops.com/docs/architecture', text: 'Architecture', external: true },
-          { href: 'https://whyops.com/sitemap', text: 'Sitemap', external: true },
+          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/docs/introduction`, text: 'Docs', external: true },
+          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/docs/architecture/overview`, text: 'Architecture', external: true },
+          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/docs/sitemap.xml`, text: 'Docs Sitemap', external: true },
+          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/sitemap.xml`, text: 'Sitemap', external: true },
+          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/robots.txt`, text: 'Robots', external: true },
         ],
       },
     ],
     legal: [
-      { href: '/privacy', text: 'Privacy' },
-      { href: '/terms', text: 'Terms' },
-      { href: 'https://github.com/cossistantcom/cossistant?tab=security-ov-file#readme', text: 'Security' },
+      // { href: '/privacy', text: 'Privacy' },
+      // { href: '/terms', text: 'Terms' },
+      { href: 'https://github.com/whyops-org', text: 'Github' },
     ],
   },
   

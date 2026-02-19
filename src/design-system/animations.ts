@@ -24,8 +24,8 @@ export const animations = {
     opacityHigh: 'hover:opacity-90',
     scale: 'hover:scale-110',
     scaleDown: 'hover:scale-95',
-    bg: 'hover:bg-[lab(95.36_0_0)]',
-    bgDark: 'dark:hover:bg-[lab(15_0_0)]',
+    bg: 'hover:bg-ds-background-tertiary',
+    bgDark: 'dark:hover:bg-ds-dark-backgroundTertiary',
   },
   
   active: {

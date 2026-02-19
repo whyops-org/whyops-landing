@@ -15,7 +15,7 @@ export const FloatingButton = () => {
         <div className="items-center box-border caret-transparent flex justify-center">
           <div className="relative box-border caret-transparent h-fit w-fit">
             <img
-              src="https://c.animaapp.com/mlnjf5yy2zLUvi/assets/icon-22.svg"
+              src="/assets/chat.svg"
               alt="Chat"
               className="text-primary box-border caret-transparent h-[30px] w-[30px]"
             />

@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { colors, typography, spacing, borders, animations, commonClasses } from '@/design-system';
+import { animations, commonClasses, spacing, typography } from '@/design-system';
 import { content } from '@/design-system/content';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { motion } from 'framer-motion';
 
 export const ProblemSection = () => {
   const { ref, isVisible } = useScrollReveal(0.2);
@@ -9,7 +9,7 @@ export const ProblemSection = () => {
   return (
     <section id="problem" className={commonClasses.section}>
       <div className={commonClasses.container}>
-        <div className={`box-border caret-transparent ${spacing.section.mobile.px} ${spacing.section.mobile.py} ${spacing.section.desktop.py}`}>
+        <div className={`box-border min-h-screen caret-transparent ${spacing.section.mobile.px} ${spacing.section.mobile.py} ${spacing.section.desktop.py}`}>
           <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 40 }}
@@ -69,7 +69,7 @@ export const ProblemSection = () => {
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: animations.duration.slower, delay: 0.6 }}
           >
-            <h3 className="text-2xl md:text-3xl font-medium mb-4 dark:text-ds-dark-text-primary font-f37stout">
+            <h3 className="text-2xl md:text-5xl font-medium mb-4 dark:text-ds-dark-text-primary font-f37stout">
               {content.problem.cost.title}
             </h3>
             <p className={`${commonClasses.body} text-base leading-6 mb-12 max-w-2xl`}>

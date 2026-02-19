@@ -1,5 +1,5 @@
 {
-  "name": "cossistant-landing",
+  "name": "whyops-landing",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,8 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.97.0",
     "class-variance-authority": "^0.7.0",
     "framer-motion": "^11.0.0",
     "lucide-react": "^0.453.0",

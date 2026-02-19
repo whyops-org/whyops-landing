@@ -2,12 +2,13 @@ import { motion } from 'framer-motion';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { colors, typography, spacing, animations, commonClasses } from '@/design-system';
 import { content } from '@/design-system/content';
+import { env } from '@/lib/env';
 
 export const CTASection = () => {
   const { ref, isVisible } = useScrollReveal(0.2);
 
   return (
-    <section id="early-access" className={`${commonClasses.section} bg-[${colors.background.secondary}] dark:bg-[${colors.dark.background.DEFAULT}]`}>
+    <section id="early-access" className={`${commonClasses.section} bg-ds-backgroundSecondary dark:bg-ds-dark-background`}>
       <div className={commonClasses.container}>
         <div className={`box-border caret-transparent ${spacing.section.mobile.px} ${spacing.section.mobile.py} ${spacing.section.desktop.py}`}>
           <motion.div
@@ -24,10 +25,15 @@ export const CTASection = () => {
               {content.finalCta.subtitle}
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-              <a href="#early-access" className={commonClasses.buttonPrimary}>
+              <a href="#top" className={commonClasses.buttonPrimary}>
                 {content.cta.primary}
               </a>
-              <a href="#contact" className={commonClasses.buttonSecondary}>
+              <a
+                href={env.schedulingLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={commonClasses.buttonSecondary}
+              >
                 {content.cta.tertiary}
               </a>
             </div>

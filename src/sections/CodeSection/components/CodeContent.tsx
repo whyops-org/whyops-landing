@@ -3,6 +3,7 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { colors, typography, spacing, borders, animations, commonClasses } from '@/design-system';
 import { content } from '@/design-system/content';
 import { CodeInstallation } from "@/sections/CodeSection/components/CodeInstallation";
+import { env } from '@/lib/env';
 
 export const CodeContent = () => {
   const { ref, isVisible } = useScrollReveal(0.2);
@@ -24,7 +25,7 @@ export const CodeContent = () => {
       <p className={`${commonClasses.body} box-border caret-transparent max-w-screen-md w-full md:w-[83.3333%]`}>
         {content.code.subtitle}
       </p>
-      <div className={`bg-[${colors.background.secondary}] dark:bg-[${colors.dark.background.tertiary}] box-border caret-transparent w-full md:w-[83.3333%] border border-[${colors.border.DEFAULT}] dark:border-[${colors.dark.border.secondary}] mt-6 ${borders.style.dashed}`}>
+      <div className={`bg-ds-backgroundSecondary dark:bg-ds-dark-backgroundTertiary box-border caret-transparent w-full md:w-[83.3333%] border border-ds-border dark:border-ds-dark-borderSecondary mt-6 ${borders.style.dashed}`}>
         <CodeInstallation />
       </div>
       <div className={`[align-items:normal] box-border caret-transparent gap-x-3 flex flex-col max-w-none gap-y-3 w-full mt-6 md:items-center md:gap-x-6 md:flex-row md:max-w-full md:gap-y-6`}>
@@ -32,7 +33,7 @@ export const CodeContent = () => {
           {content.cta.primary}
         </a>
         <a
-          href="https://whyops.com/docs"
+          href={`${env.siteUrl}/docs`}
           target="_blank"
           rel="noopener noreferrer"
           className={commonClasses.buttonSecondary}

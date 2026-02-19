@@ -1,9 +1,9 @@
-export { colors } from './colors';
-export { typography } from './typography';
-export { spacing } from './spacing';
-export { borders } from './borders';
 export { animations } from './animations';
+export { borders } from './borders';
+export { colors } from './colors';
 export { shadows } from './shadows';
+export { spacing } from './spacing';
+export { typography } from './typography';
 
 // Utility function to get color with dark mode support
 export const getColor = (lightColor: string, darkColor: string) => {
@@ -13,7 +13,7 @@ export const getColor = (lightColor: string, darkColor: string) => {
 // Common class combinations - updated to use Tailwind design system
 export const commonClasses = {
   // Container
-  container: 'max-w-[1400px] mx-auto border-ds-border dark:border-ds-dark-border border-l border-r border-dashed',
+  container: 'max-w-[1400px] mx-auto px-3 md:px-10 border-ds-border dark:border-ds-dark-border border-l border-r border-dashed',
 
   // Section
   section: 'box-border caret-transparent w-full border-ds-border dark:border-ds-dark-border border-t border-dashed',

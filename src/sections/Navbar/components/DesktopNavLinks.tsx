@@ -8,7 +8,7 @@ export const DesktopNavLinks = () => {
         <a
           key={link.href}
           href={link.href}
-          className={`text-sm font-medium items-center box-border caret-transparent gap-x-1 flex leading-5 min-h-0 min-w-0 gap-y-1 mr-4 md:min-h-[auto] md:min-w-[auto] ${animations.transitions.opacity} ${animations.hover.opacity} text-[${colors.text.primary}] dark:text-[${colors.dark.text.secondary}]`}
+          className={`text-sm font-medium items-center box-border caret-transparent gap-x-1 flex leading-5 min-h-0 min-w-0 gap-y-1 mr-4 md:min-h-[auto] md:min-w-[auto] ${animations.transitions.opacity} ${animations.hover.opacity} text-ds-textPrimary dark:text-ds-dark-textSecondary`}
         >
           {link.text}
         </a>

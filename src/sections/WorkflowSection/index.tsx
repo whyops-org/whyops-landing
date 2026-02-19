@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { AlertCircle, Lightbulb, CheckCircle } from 'lucide-react';
-import { colors, typography, spacing, animations, commonClasses } from '@/design-system';
+import { animations, commonClasses, spacing, typography } from '@/design-system';
 import { content } from '@/design-system/content';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { motion } from 'framer-motion';
+import { AlertCircle, CheckCircle, Lightbulb } from 'lucide-react';
 
 export const WorkflowSection = () => {
   const { ref, isVisible } = useScrollReveal(0.2);
@@ -40,7 +40,7 @@ export const WorkflowSection = () => {
             transition={{ duration: animations.duration.slower }}
             className="mb-16 md:mb-20"
           >
-            <h2 className={`${commonClasses.heading} text-[${typography.fontSize.hero}] md:text-6xl box-border caret-transparent leading-[${typography.lineHeight['2xl']}] md:leading-[${typography.lineHeight['3xl']}] max-w-4xl`}>
+            <h2 className={`${commonClasses.heading}  text-[${typography.fontSize.hero}] md:text-6xl box-border caret-transparent leading-[${typography.lineHeight['2xl']}] md:leading-[${typography.lineHeight['3xl']}] max-w-4xl`}>
               {content.workflow.title}
             </h2>
           </motion.div>
@@ -56,7 +56,7 @@ export const WorkflowSection = () => {
                   transition={{ duration: animations.duration.slow, delay: index * 0.2 }}
                   className="relative"
                 >
-                  <div className={commonClasses.card + ' p-6'}>
+                  <div className={commonClasses.card + ' p-6 h-40'}>
                     <div className="flex items-center gap-3 mb-4">
                       <Icon className={`w-5 h-5 ${step.color}`} />
                       <span className={`text-xs font-medium ${commonClasses.muted} font-geist_mono`}>
