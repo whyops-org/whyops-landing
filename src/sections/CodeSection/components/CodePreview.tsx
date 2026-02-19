@@ -18,7 +18,7 @@ export const CodePreview = () => {
         <div className="absolute box-border caret-transparent z-0 inset-0">
           <picture className="absolute box-border h-full w-full caret-transparent block inset-0">
             <img
-              alt="Cossistant Background"
+              alt="WhyOps Background"
               sizes="100vw"
               src="/assets/widget-bg-1.jpg"
               className="aspect-[auto_1920_/_1080] box-border caret-transparent grayscale-[0.5] h-full max-w-full object-cover object-[50%_0%] w-full md:object-[50%_50%]"
