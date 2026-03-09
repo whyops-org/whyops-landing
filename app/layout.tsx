@@ -5,10 +5,13 @@ import "./globals.css";
 const siteUrl = env.siteUrl;
 const description = "WhyOps makes agent decisions legible, replayable, and fixable. Debug AI agents with decision-aware state tracking, production replay, and visual debugging. Stop guessing, start shipping reliable autonomy.";
 const defaultTitle = `${brand.name} - Decision-Aware Observability for AI Agents`;
-const ogImage = `${siteUrl}/WhyOpsLogo.svg`;
+const ogImage = `${siteUrl}/og.webp`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: defaultTitle,
     template: `%s · ${brand.name}`,
@@ -41,6 +44,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
+    url: "/",
     title: defaultTitle,
     description,
     siteName: brand.name,
@@ -58,7 +62,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: defaultTitle,
     description,
-    images: [ogImage],
+    images: [
+      {
+        url: ogImage,
+        alt: `${brand.name} - Decision-Aware Observability for AI Agents`,
+      },
+    ],
   },
   icons: {
     icon: "/favicon.ico",
