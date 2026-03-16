@@ -25,7 +25,7 @@ export const CTASection = () => {
               {content.finalCta.subtitle}
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-              <a href="#top" className={commonClasses.buttonPrimary}>
+              <a href={content.appUrl} target="_blank" rel="noopener noreferrer" className={commonClasses.buttonPrimary}>
                 {content.cta.primary}
               </a>
               <a

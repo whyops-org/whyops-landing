@@ -15,11 +15,13 @@ export const content = {
   },
   
   cta: {
-    primary: 'Get Early Access',
+    primary: 'Launch App',
     secondary: 'See How It Works',
     tertiary: 'Talk to Us',
     docs: 'Read the docs',
   },
+  
+  appUrl: 'https://app.whyops.com',
   
   compatibility: {
     title: 'Works well with',

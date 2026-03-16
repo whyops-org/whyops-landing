@@ -29,7 +29,7 @@ export const CodeContent = () => {
         <CodeInstallation />
       </div>
       <div className={`[align-items:normal] box-border caret-transparent gap-x-3 flex flex-col max-w-none gap-y-3 w-full mt-6 md:items-center md:gap-x-6 md:flex-row md:max-w-full md:gap-y-6`}>
-        <a href="#early-access" className={commonClasses.buttonPrimary + ' md:w-[250px]'}>
+        <a href={content.appUrl} target="_blank" rel="noopener noreferrer" className={commonClasses.buttonPrimary + ' md:w-[250px]'}>
           {content.cta.primary}
         </a>
         <a

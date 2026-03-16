@@ -53,7 +53,9 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                 ))}
                 <div className={`border-t border-ds-border dark:border-ds-dark-borderSecondary my-2`}></div>
                 <a
-                  href="#early-access"
+                  href={content.appUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={onClose}
                   className={`text-sm font-medium bg-primary dark:bg-ds-dark-text-primary text-primary-foreground dark:text-ds-dark-background py-3 px-4 ${borders.radius.sm} ${animations.hover.opacityHigh} ${animations.transitions.all} text-center`}
                 >

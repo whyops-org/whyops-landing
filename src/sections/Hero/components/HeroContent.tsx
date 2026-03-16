@@ -1,6 +1,5 @@
 'use client';
 
-import { EmailSignup } from '@/components/EmailSignup';
 import { commonClasses } from '@/design-system';
 import { content } from '@/design-system/content';
 import { motion } from 'framer-motion';
@@ -30,7 +29,9 @@ export const HeroContent = () => {
         transition={{ duration: 0.6, delay: 0.4 }}
         className="box-border caret-transparent flex flex-col gap-3 w-full mt-6"
       >
-        <EmailSignup />
+        <a href={content.appUrl} className={commonClasses.buttonPrimary}>
+          {content.cta.primary}
+        </a>
       </motion.div>
     </div>
   );
