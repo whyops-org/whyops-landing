@@ -27,9 +27,9 @@ export const HeroContent = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="box-border caret-transparent flex flex-col gap-3 w-full mt-6"
+        className="box-border caret-transparent mt-6"
       >
-        <a href={content.appUrl} className={commonClasses.buttonPrimary}>
+        <a href={content.appUrl} target="_blank" rel="noopener noreferrer" className={commonClasses.buttonPrimary}>
           {content.cta.primary}
         </a>
       </motion.div>
