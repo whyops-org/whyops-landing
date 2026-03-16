@@ -37,9 +37,6 @@ export const HeroContent = () => {
         >
           <span className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.22),transparent_52%)] opacity-80 transition-opacity duration-200 group-hover:opacity-100" />
           <span className="relative flex items-center gap-2.5">
-            <span className="rounded-full border border-white/20 bg-white/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-primary-foreground/85 dark:border-black/15 dark:bg-black/10 dark:text-ds-dark-background/75">
-              Live
-            </span>
             <span>{content.cta.primary}</span>
             <span className="text-xs transition-transform duration-200 group-hover:translate-x-0.5">
               {'->'}
