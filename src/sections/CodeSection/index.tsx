@@ -10,7 +10,7 @@ export const CodeSection = () => {
       <CodeContent />
       <div className="box-border caret-transparent basis-[0%] grow h-full w-full">
         <div className="relative box-border caret-transparent gap-x-2 flex flex-col h-full gap-y-2 w-full">
-          <div className="relative border border-primary/10 bg-ds-background dark:bg-ds-dark-backgroundSecondary box-border caret-transparent max-w-full w-full p-[3px] rounded-sm">
+          <div className="relative box-border caret-transparent max-w-full w-full">
             <CodePreview />
           </div>
         </div>

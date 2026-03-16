@@ -7,12 +7,13 @@ import { CompatibilityBadges } from "@/sections/CompatibilityBadges";
 import { CTASection } from "@/sections/CTASection";
 import { Footer } from "@/sections/Footer";
 import { Hero } from "@/sections/Hero";
-import { HeroPreview } from "@/sections/Hero/components/HeroPreview";
 import { Navbar } from "@/sections/Navbar";
 import { PlatformSection } from "@/sections/PlatformSection";
 import { ProblemSection } from "@/sections/ProblemSection";
 import { SolutionSection } from "@/sections/SolutionSection";
 import { WorkflowSection } from "@/sections/WorkflowSection";
+import { motion } from 'framer-motion';
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -37,7 +38,19 @@ export default function Home() {
             <WorkflowSection />
             <PlatformSection />
             <div className="box-border px-3 md:px-10 caret-transparent max-w-[1400px] w-full border-ds-border dark:border-ds-dark-border mx-auto border-l border-r border-dashed">
-              <HeroPreview imagePath="/assets/TRACES.webp" />
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Image
+                  src="/assets/cta2.webp"
+                  alt="WhyOps mid section"
+                  width={1920}
+                  height={1080}
+                  className="h-auto w-full"
+                />
+              </motion.div>
             </div>
             <CTASection />
           </main>

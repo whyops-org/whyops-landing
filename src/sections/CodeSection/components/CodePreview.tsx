@@ -20,7 +20,7 @@ export const CodePreview = () => {
             <img
               alt="WhyOps Background"
               sizes="100vw"
-              src="/assets/widget-bg-1.jpg"
+              src="/assets/mid.webp"
               className="aspect-[auto_1920_/_1080] box-border caret-transparent grayscale-[0.5] h-full max-w-full object-cover object-[50%_0%] w-full md:object-[50%_50%]"
             />
           </picture>

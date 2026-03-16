@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { colors, typography, spacing, animations, commonClasses } from '@/design-system';
+import { animations, commonClasses, spacing, typography } from '@/design-system';
 import { content } from '@/design-system/content';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { env } from '@/lib/env';
+import { motion } from 'framer-motion';
 
 export const CTASection = () => {
   const { ref, isVisible } = useScrollReveal(0.2);
