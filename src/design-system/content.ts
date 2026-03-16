@@ -15,7 +15,7 @@ export const content = {
   },
   
   cta: {
-    primary: 'Launch App',
+    primary: 'Inspect Runs',
     secondary: 'See How It Works',
     tertiary: 'Talk to Us',
     docs: 'Read the docs',
