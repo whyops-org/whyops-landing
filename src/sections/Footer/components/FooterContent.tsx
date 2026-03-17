@@ -22,6 +22,7 @@ export const FooterContent = () => {
           links={[
             { href: "#problem", text: "The Problem" },
             { href: "#solution", text: "Solution" },
+            { href: "#faq", text: "FAQ" },
             { href: "#platform", text: "Platform" },
           ]}
         />

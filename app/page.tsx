@@ -1,17 +1,21 @@
 'use client';
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { BenchmarksSection } from "@/sections/BenchmarksSection";
 import { CodeSection } from "@/sections/CodeSection";
 import { ComparisonSection } from "@/sections/ComparisonSection";
 import { CompatibilityBadges } from "@/sections/CompatibilityBadges";
 import { CTASection } from "@/sections/CTASection";
 import { Footer } from "@/sections/Footer";
+import { FAQSection } from "@/sections/FAQSection";
 import { Hero } from "@/sections/Hero";
 import { Navbar } from "@/sections/Navbar";
 import { PlatformSection } from "@/sections/PlatformSection";
 import { ProblemSection } from "@/sections/ProblemSection";
 import { SolutionSection } from "@/sections/SolutionSection";
 import { WorkflowSection } from "@/sections/WorkflowSection";
+import { JsonLd } from "@/components/JsonLd";
+import { buildHomeStructuredData } from "@/lib/structuredData";
 import { motion } from 'framer-motion';
 import Image from "next/image";
 
@@ -19,6 +23,7 @@ export default function Home() {
   return (
     <ThemeProvider>
       <div id="top" className="text-ds-text-primary dark:text-ds-dark-text-primary text-base not-italic normal-nums font-normal accent-auto bg-ds-background dark:bg-ds-dark-background box-border caret-transparent block tracking-[normal] leading-6 list-outside list-disc pointer-events-auto text-start indent-[0px] normal-case visible border-separate font-geist transition-colors duration-300">
+        <JsonLd data={buildHomeStructuredData()} />
         <div className="box-border caret-transparent hidden"></div>
         <div className="box-border caret-transparent isolate"></div>
         <div className="box-border caret-transparent hidden p-3"></div>
@@ -33,10 +38,12 @@ export default function Home() {
               </section>
             </div>
             <ProblemSection />
+            <BenchmarksSection />
             <ComparisonSection />
             <SolutionSection />
             <WorkflowSection />
             <PlatformSection />
+            <FAQSection />
             <div className="box-border px-3 md:px-10 caret-transparent max-w-[1400px] w-full border-ds-border dark:border-ds-dark-border mx-auto border-l border-r border-dashed">
               <motion.div
                 initial={{ opacity: 0, y: 40 }}

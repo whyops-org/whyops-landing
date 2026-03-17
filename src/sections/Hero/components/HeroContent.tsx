@@ -1,7 +1,9 @@
 'use client';
 
+import { Citation } from '@/components/Citation';
 import { commonClasses } from '@/design-system';
 import { content } from '@/design-system/content';
+import { heroEvidence } from '@/lib/evidence';
 import { motion } from 'framer-motion';
 
 export const HeroContent = () => {
@@ -19,9 +21,9 @@ export const HeroContent = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className={`${commonClasses.body} text-lg box-border caret-transparent leading-7 max-w-2xl`}
+        className={`${commonClasses.body} text-base box-border caret-transparent leading-7 max-w-xl md:text-lg`}
       >
-        {content.site.description}
+        {content.site.description} Built for teams moving from agent demos to production systems.
       </motion.p>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -42,6 +44,30 @@ export const HeroContent = () => {
             </span>
           </span>
         </a>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="grid w-full grid-cols-1 gap-4 pt-3 md:grid-cols-3"
+      >
+        {heroEvidence.map((item) => (
+          <div
+            key={item.label}
+            className="rounded-sm border border-dashed border-ds-border bg-ds-backgroundSecondary p-4 dark:border-ds-dark-borderSecondary dark:bg-ds-dark-backgroundTertiary"
+          >
+            <div className="mb-2 text-2xl font-medium font-f37stout text-ds-text-primary dark:text-ds-dark-text-primary">
+              {item.value}
+            </div>
+            <p className="mb-2 text-sm font-medium leading-5 text-ds-text-primary dark:text-ds-dark-text-primary">
+              {item.label}
+            </p>
+            <p className={`${commonClasses.muted} mb-3 text-sm leading-5`}>
+              {item.detail}
+            </p>
+            <Citation href={item.href} label={item.sourceLabel} />
+          </div>
+        ))}
       </motion.div>
     </div>
   );

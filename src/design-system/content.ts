@@ -9,7 +9,9 @@ export const content = {
   navigation: {
     links: [
       { href: '#problem', text: 'The Problem' },
+      { href: '#benchmarks', text: 'Benchmarks' },
       { href: '#solution', text: 'Solution' },
+      { href: '#faq', text: 'FAQ' },
       { href: '#platform', text: 'Platform' },
     ],
   },
@@ -34,7 +36,7 @@ export const content = {
   
   problem: {
     title: 'The Core Challenge',
-    subtitle: 'AI agents fail in production for reasons you can\'t see. Teams lack visibility into agent decision-making, so debugging becomes guesswork.',
+    subtitle: 'AI agents fail in production for reasons you cannot see. Teams can trace outputs, but they still struggle to explain why an agent chose a tool, skipped a guardrail, or drifted off course.',
     sectionTitle: 'Why teams get stuck',
     challenges: [
       {
@@ -54,12 +56,12 @@ export const content = {
       },
     ],
     cost: {
-      title: 'The cost',
-      subtitle: 'Invisible failures slow teams down. Every hour spent guessing is an hour not shipping. WhyOps turns uncertainty into clarity so teams can move fast with confidence.',
+      title: 'What the market data says',
+      subtitle: 'The visibility gap is measurable now. AI use is accelerating, observability stacks are fragmenting, and teams need a clearer way to inspect agent decisions before failures turn into incidents.',
       metrics: [
-        { time: 'Days', description: 'Lost to debugging opaque behavior' },
-        { time: 'Weeks', description: 'To diagnose production-only failures' },
-        { time: 'Months', description: 'To earn trust in autonomous systems' },
+        { time: '71%', description: 'Organizations already use generative AI in at least one business function' },
+        { time: '70%', description: 'Organizations rely on four or more observability tools' },
+        { time: '79%', description: 'Teams say centralized observability already saves time or money' },
       ],
     },
   },
@@ -78,7 +80,7 @@ export const content = {
   
   solution: {
     title: 'The debugging copilot for agents',
-    subtitle: 'Replay any run, inspect the decision trail, and share the exact state with your team.',
+    subtitle: 'Replay any run, inspect the decision trail, and share the exact state with your team so fixes start from evidence, not guesswork.',
     features: [
       {
         title: 'Decision-aware state',
@@ -150,6 +152,7 @@ export const content = {
         links: [
           { href: '#problem', text: 'The Problem' },
           { href: '#solution', text: 'Solution' },
+          { href: '#faq', text: 'FAQ' },
           { href: '#platform', text: 'Platform' },
         ],
       },

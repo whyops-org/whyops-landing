@@ -1,3 +1,4 @@
+import { Citation } from '@/components/Citation';
 import { motion } from 'framer-motion';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { typography, spacing, animations, commonClasses } from '@/design-system';
@@ -21,7 +22,12 @@ export const SolutionSection = () => {
               {content.solution.title}
             </h2>
             <p className={`${commonClasses.body} text-lg box-border caret-transparent leading-7 max-w-2xl`}>
-              {content.solution.subtitle}
+              {content.solution.subtitle} In IBM&apos;s definition, observability means understanding a system&apos;s internal state from its outputs. WhyOps extends that idea to agent runs by exposing the state, instructions, and decisions behind every action.{' '}
+              <Citation
+                href="https://www.ibm.com/think/topics/observability"
+                label="IBM, What Is Observability?"
+                className="inline"
+              />
             </p>
           </motion.div>
 
