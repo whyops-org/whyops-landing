@@ -6,7 +6,6 @@ const siteUrl = env.siteUrl;
 export const buildHomeStructuredData = () => {
   const organizationId = `${siteUrl}#organization`;
   const websiteId = `${siteUrl}#website`;
-  const productId = `${siteUrl}#product`;
   const softwareId = `${siteUrl}#software`;
   const faqId = `${siteUrl}#faq`;
 
@@ -37,19 +36,6 @@ export const buildHomeStructuredData = () => {
         publisher: {
           '@id': organizationId,
         },
-      },
-      {
-        '@type': 'Product',
-        '@id': productId,
-        name: brand.name,
-        url: siteUrl,
-        image: [`${siteUrl}/twitter-og.png`],
-        description:
-          'Decision-aware observability for AI agents with state tracking, replay, and visual debugging for production agent systems.',
-        brand: {
-          '@id': organizationId,
-        },
-        category: 'AI agent observability platform',
       },
       {
         '@type': 'SoftwareApplication',
