@@ -5,7 +5,7 @@ import "./globals.css";
 const siteUrl = env.siteUrl;
 const description = "WhyOps makes agent decisions legible, replayable, and fixable. Debug AI agents with decision-aware state tracking, production replay, and visual debugging. Stop guessing, start shipping reliable autonomy.";
 const defaultTitle = `${brand.name} - Decision-Aware Observability for AI Agents`;
-const ogImage = `${siteUrl}/twitter-og.png`;
+const ogImage = `${siteUrl}/og.webp`;
 const twitterImage = `${siteUrl}/twitter-og.png`;
 
 export const metadata: Metadata = {

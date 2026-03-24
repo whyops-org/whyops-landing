@@ -18,7 +18,7 @@ export const buildHomeStructuredData = () => {
         '@id': organizationId,
         name: brand.companyName,
         url: siteUrl,
-        logo: `${siteUrl}${brand.logo.src}`,
+        logo: `${siteUrl}/Logo.png`,
         sameAs: ['https://github.com/whyops-org'],
         contactPoint: [
           {
@@ -43,7 +43,7 @@ export const buildHomeStructuredData = () => {
         '@id': productId,
         name: brand.name,
         url: siteUrl,
-        image: [`${siteUrl}/og.webp`],
+        image: [`${siteUrl}/twitter-og.png`],
         description:
           'Decision-aware observability for AI agents with state tracking, replay, and visual debugging for production agent systems.',
         brand: {
@@ -56,7 +56,7 @@ export const buildHomeStructuredData = () => {
         '@id': softwareId,
         name: brand.name,
         url: siteUrl,
-        image: `${siteUrl}/og.webp`,
+        image: `${siteUrl}/twitter-og.png`,
         operatingSystem: 'Web',
         applicationCategory: 'DeveloperApplication',
         applicationSubCategory: 'AI agent observability',
