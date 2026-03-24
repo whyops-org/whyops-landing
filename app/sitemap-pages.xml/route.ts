@@ -3,12 +3,10 @@ import { NextResponse } from "next/server";
 
 export function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://whyops.com";
-  const lastModified = new Date().toISOString();
-
   const entries: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified,
+      lastModified: "2026-03-25",
       changeFrequency: "weekly",
       priority: 1,
     },
