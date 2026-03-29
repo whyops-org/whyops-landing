@@ -72,6 +72,56 @@ async function getResolvedManifest(): Promise<PseoManifest> {
   return context.manifest;
 }
 
+function buildLeafSitemapPathsFromShards(shards: PseoManifestShard[]): string[] {
+  const sorted = [...shards].sort(sortShards);
+  const paths: string[] = [];
+  const counters = new Map<
+    string,
+    { location: number; translationCore: number; translationLocation: number }
+  >();
+
+  for (const shard of sorted) {
+    if (shard.kind === "global-utility") {
+      paths.push(buildGlobalUtilitySitemapPath());
+      continue;
+    }
+
+    if (!shard.category_slug) {
+      continue;
+    }
+
+    const state = counters.get(shard.category_slug) || {
+      location: 0,
+      translationCore: 0,
+      translationLocation: 0,
+    };
+
+    if (shard.kind === "category-core") {
+      paths.push(buildCategoryCoreSitemapPath(shard.category_slug));
+    } else if (shard.kind === "category-location") {
+      paths.push(buildCategoryLocationsPagePath(shard.category_slug, state.location));
+      state.location += 1;
+    } else if (shard.kind === "category-translation-core") {
+      paths.push(
+        buildCategoryTranslationCorePagePath(shard.category_slug, state.translationCore),
+      );
+      state.translationCore += 1;
+    } else if (shard.kind === "category-translation-location") {
+      paths.push(
+        buildCategoryTranslationLocationPagePath(
+          shard.category_slug,
+          state.translationLocation,
+        ),
+      );
+      state.translationLocation += 1;
+    }
+
+    counters.set(shard.category_slug, state);
+  }
+
+  return paths;
+}
+
 function sortShards(left: PseoManifestShard, right: PseoManifestShard) {
   return [
     left.kind,
@@ -397,6 +447,11 @@ export async function getSitePseoGlobalShards() {
     .sort(sortShards);
 }
 
+export async function getSitePseoLeafSitemapPaths() {
+  const manifest = await getResolvedManifest();
+  return buildLeafSitemapPathsFromShards(manifest.shards);
+}
+
 export async function getSitePseoCategoryShardGroups(
   categorySlug: string,
 ): Promise<CategoryShardGroups> {
@@ -412,6 +467,11 @@ export async function getSitePseoCategoryShardGroups(
       (shard) => shard.kind === "category-translation-location",
     ),
   };
+}
+
+export async function getSitePseoCategoryLeafSitemapPaths(categorySlug: string) {
+  const shards = await getSitePseoCategoryShards(categorySlug);
+  return buildLeafSitemapPathsFromShards(shards);
 }
 
 export async function getPrettySitemapPathForShard(
