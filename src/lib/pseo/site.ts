@@ -1,4 +1,3 @@
-import { env } from "@/lib/env";
 import {
   buildCategoryCoreSitemapPath,
   buildCategoryLocationsPagePath,
@@ -7,6 +6,8 @@ import {
   buildGlobalUtilitySitemapPath,
 } from "@/lib/pseo/sitemap";
 import { resolvePseoDataset } from "@/lib/pseo/api";
+import { loadPseoSnapshotContext } from "@/lib/pseo/snapshot";
+import { getSiteSourceConfig } from "@/lib/pseo/source-config";
 import {
   buildPseoManifest,
   generatePseoPagesForShard,
@@ -18,36 +19,7 @@ import type {
   PseoManifest,
   PseoManifestShard,
   PseoPage,
-  PublicSourceConfig,
 } from "@/lib/pseo/types";
-
-function getSiteSourceConfig(): PublicSourceConfig {
-  const enabledSources: PublicSourceConfig["enabled_sources"] = [
-    "restcountries",
-    "worldbank",
-  ];
-
-  if (env.geonamesUsername) {
-    enabledSources.push("geonames");
-  }
-
-  return {
-    enabled_sources: enabledSources,
-    restcountries: {
-      include_countries: true,
-    },
-    worldbank: {
-      include_countries: true,
-    },
-    geonames: env.geonamesUsername
-      ? {
-          username: env.geonamesUsername,
-          max_rows: 500,
-          min_population: 200000,
-        }
-      : undefined,
-  };
-}
 
 type SitePseoContext = {
   normalized_dataset: NormalizedDataset;
@@ -62,6 +34,16 @@ type CategoryShardGroups = {
 };
 
 let siteContextPromise: Promise<SitePseoContext> | null = null;
+let snapshotContextPromise: Promise<Awaited<ReturnType<typeof loadPseoSnapshotContext>>> | null =
+  null;
+
+async function getCachedSnapshotContext() {
+  if (!snapshotContextPromise) {
+    snapshotContextPromise = loadPseoSnapshotContext();
+  }
+
+  return snapshotContextPromise;
+}
 
 async function getCachedSitePseoContext(): Promise<SitePseoContext> {
   if (!siteContextPromise) {
@@ -79,6 +61,16 @@ async function getCachedSitePseoContext(): Promise<SitePseoContext> {
 
 const shardPageCache = new Map<string, Promise<PseoPage[]>>();
 const resolvedPageCache = new Map<string, Promise<PseoPage | null>>();
+
+async function getResolvedManifest(): Promise<PseoManifest> {
+  const snapshot = await getCachedSnapshotContext();
+  if (snapshot?.manifest) {
+    return snapshot.manifest;
+  }
+
+  const context = await getCachedSitePseoContext();
+  return context.manifest;
+}
 
 function sortShards(left: PseoManifestShard, right: PseoManifestShard) {
   return [
@@ -324,6 +316,21 @@ async function getMemoryCachedShardPages(shardId: string): Promise<PseoPage[]> {
   }
 
   const promise = (async () => {
+    const snapshot = await getCachedSnapshotContext();
+    if (snapshot) {
+      const shard = getShardById(snapshot.manifest, shardId);
+      if (!shard) {
+        return [];
+      }
+
+      const generated = generatePseoPagesForShard(
+        snapshot.normalized_dataset,
+        shard,
+      );
+
+      return generated.status === "OK" && generated.pages ? generated.pages : [];
+    }
+
     const context = await getCachedSitePseoContext();
     const shard = getShardById(context.manifest, shardId);
 
@@ -368,25 +375,24 @@ export async function getSitePseoShardPages(shardId: string) {
 }
 
 export async function getSitePseoShard(shardId: string): Promise<PseoManifestShard | null> {
-  const context = await getCachedSitePseoContext();
-  return getShardById(context.manifest, shardId);
+  const manifest = await getResolvedManifest();
+  return getShardById(manifest, shardId);
 }
 
 export async function getSitePseoManifest() {
-  const context = await getCachedSitePseoContext();
-  return context.manifest;
+  return getResolvedManifest();
 }
 
 export async function getSitePseoCategoryShards(categorySlug: string) {
-  const context = await getCachedSitePseoContext();
-  return context.manifest.shards
+  const manifest = await getResolvedManifest();
+  return manifest.shards
     .filter((shard) => shard.category_slug === categorySlug)
     .sort(sortShards);
 }
 
 export async function getSitePseoGlobalShards() {
-  const context = await getCachedSitePseoContext();
-  return context.manifest.shards
+  const manifest = await getResolvedManifest();
+  return manifest.shards
     .filter((shard) => shard.kind === "global-utility")
     .sort(sortShards);
 }
@@ -460,6 +466,29 @@ export async function resolveSitePseoPageByPath(pathname: string): Promise<PseoP
   }
 
   const promise = (async () => {
+    const snapshot = await getCachedSnapshotContext();
+    if (snapshot) {
+      const candidateShardIds = inferCandidateShardIds(
+        normalizedPath,
+        snapshot.normalized_dataset,
+        snapshot.manifest,
+      );
+
+      for (const shardId of candidateShardIds) {
+        const shard = getShardById(snapshot.manifest, shardId);
+        if (!shard) {
+          continue;
+        }
+
+        const page = await resolvePageFromCandidateShard(normalizedPath, shard);
+        if (page) {
+          return page;
+        }
+      }
+
+      return null;
+    }
+
     const context = await getCachedSitePseoContext();
     const candidateShardIds = inferCandidateShardIds(
       normalizedPath,

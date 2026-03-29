@@ -44,6 +44,7 @@ dist-ssr
 /.next/
 /.next-dev/
 /out/
+/public/generated/pseo/
 
 # production
 /build
