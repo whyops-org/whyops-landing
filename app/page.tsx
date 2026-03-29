@@ -1,5 +1,6 @@
 'use client';
 
+import { buildHomeStructuredData } from "@/lib/structuredData";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { BenchmarksSection } from "@/sections/BenchmarksSection";
 import { CodeSection } from "@/sections/CodeSection";
@@ -21,6 +22,15 @@ export default function Home() {
   return (
     <ThemeProvider>
       <div id="top" className="text-ds-text-primary dark:text-ds-dark-text-primary text-base not-italic normal-nums font-normal accent-auto bg-ds-background dark:bg-ds-dark-background box-border caret-transparent block tracking-[normal] leading-6 list-outside list-disc pointer-events-auto text-start indent-[0px] normal-case visible border-separate font-geist transition-colors duration-300">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildHomeStructuredData())
+              .replace(/</g, '\\u003c')
+              .replace(/>/g, '\\u003e')
+              .replace(/&/g, '\\u0026'),
+          }}
+        />
 <div className="box-border caret-transparent hidden"></div>
         <div className="box-border caret-transparent isolate"></div>
         <div className="box-border caret-transparent hidden p-3"></div>

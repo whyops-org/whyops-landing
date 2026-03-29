@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { NextResponse } from "next/server";
 
-export function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://whyops.com";
+export function GET(request: Request) {
+  const baseUrl = new URL(request.url).origin;
   const entries: MetadataRoute.Sitemap = [
     {
       url: baseUrl,

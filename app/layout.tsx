@@ -1,5 +1,4 @@
 import { brand, env } from "@/lib/env";
-import { buildHomeStructuredData } from "@/lib/structuredData";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -107,13 +106,6 @@ export default function RootLayout({
           }}
         />
         <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(buildHomeStructuredData())
-              .replace(/</g, '\\u003c')
-              .replace(/>/g, '\\u003e')
-              .replace(/&/g, '\\u0026'),
-          }}
         />
       </head>
       <body className="antialiased">

@@ -6,6 +6,7 @@ const siteUrl = env.siteUrl;
 export const buildHomeStructuredData = () => {
   const organizationId = `${siteUrl}#organization`;
   const websiteId = `${siteUrl}#website`;
+  const webpageId = `${siteUrl}#webpage`;
   const softwareId = `${siteUrl}#software`;
   const faqId = `${siteUrl}#faq`;
 
@@ -38,6 +39,22 @@ export const buildHomeStructuredData = () => {
         },
       },
       {
+        '@type': 'WebPage',
+        '@id': webpageId,
+        url: siteUrl,
+        name: brand.name,
+        description: env.seoDescription,
+        isPartOf: {
+          '@id': websiteId,
+        },
+        about: {
+          '@id': softwareId,
+        },
+        mainEntity: {
+          '@id': faqId,
+        },
+      },
+      {
         '@type': 'SoftwareApplication',
         '@id': softwareId,
         name: brand.name,
@@ -46,8 +63,7 @@ export const buildHomeStructuredData = () => {
         operatingSystem: 'Web',
         applicationCategory: 'DeveloperApplication',
         applicationSubCategory: 'AI agent observability',
-        description:
-          'WhyOps helps teams inspect agent decisions with decision-aware state, production replay, and multi-agent debugging.',
+        description: env.seoDescription,
         featureList: [
           'Decision-aware state tracking',
           'Production replay for agent runs',
@@ -61,6 +77,11 @@ export const buildHomeStructuredData = () => {
       {
         '@type': 'FAQPage',
         '@id': faqId,
+        url: `${siteUrl}/#faq`,
+        inLanguage: 'en-US',
+        isPartOf: {
+          '@id': webpageId,
+        },
         mainEntity: faqItems.map((item) => ({
           '@type': 'Question',
           name: item.question,

@@ -1,16 +1,20 @@
 import type { MetadataRoute } from "next";
 import { NextResponse } from "next/server";
 
-export function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://whyops.com";
+export function GET(request: Request) {
+  const baseUrl = new URL(request.url).origin;
   const entries: MetadataRoute.Sitemap = [
     {
-      url: `${baseUrl}/sitemap-pages.xml`,
+      url: `${baseUrl}/sitemaps/static.xml`,
+      lastModified: "2026-03-29",
+    },
+    {
+      url: `${baseUrl}/sitemaps/pseo/index.xml`,
       lastModified: "2026-03-25",
     },
     {
-      url: "https://whyops.com/docs/sitemap.xml",
-      lastModified: "2026-03-25",
+      url: `${baseUrl}/docs/sitemap.xml`,
+      lastModified: "2026-03-29",
     },
   ];
 

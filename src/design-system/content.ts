@@ -1,3 +1,5 @@
+import { env } from '@/lib/env';
+
 export const content = {
   site: {
     name: 'WhyOps',
@@ -159,11 +161,11 @@ export const content = {
       {
         title: 'Resources',
         links: [
-          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/docs/introduction`, text: 'Docs', external: true },
-          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/docs/architecture/overview`, text: 'Architecture', external: true },
-          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/docs/sitemap.xml`, text: 'Docs Sitemap', external: true },
-          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/sitemap.xml`, text: 'Sitemap', external: true },
-          { href: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com'}/robots.txt`, text: 'Robots', external: true },
+          { href: env.docsUrl, text: 'Docs', external: true },
+          { href: env.docsArchitectureUrl, text: 'Architecture', external: true },
+          { href: env.docsSitemapUrl, text: 'Docs Sitemap', external: true },
+          { href: `${env.siteUrl}/sitemap.xml`, text: 'Sitemap', external: true },
+          { href: `${env.siteUrl}/robots.txt`, text: 'Robots', external: true },
         ],
       },
     ],

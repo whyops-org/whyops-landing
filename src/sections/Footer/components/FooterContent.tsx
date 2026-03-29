@@ -29,9 +29,9 @@ export const FooterContent = () => {
         <FooterLinks
           title="Resources"
           links={[
-            { href: `${env.siteUrl}/docs/introduction`, text: "Docs", external: true },
-            { href: `${env.siteUrl}/docs/architecture/overview`, text: "Architecture", external: true },
-            { href: `${env.siteUrl}/docs/sitemap.xml`, text: "Docs Sitemap", external: true },
+            { href: env.docsUrl, text: "Docs", external: true },
+            { href: env.docsArchitectureUrl, text: "Architecture", external: true },
+            { href: env.docsSitemapUrl, text: "Docs Sitemap", external: true },
             { href: `${env.siteUrl}/sitemap.xml`, text: "Sitemap", external: true },
             { href: `${env.siteUrl}/robots.txt`, text: "Robots", external: true },
           ]}
