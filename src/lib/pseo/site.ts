@@ -6,7 +6,7 @@ import {
   buildGlobalUtilitySitemapPath,
 } from "@/lib/pseo/sitemap";
 import { resolvePseoDataset } from "@/lib/pseo/api";
-import { loadPseoSnapshotContext } from "@/lib/pseo/snapshot";
+import { loadPseoShardPages, loadPseoSnapshotContext } from "@/lib/pseo/snapshot";
 import { getSiteSourceConfig } from "@/lib/pseo/source-config";
 import {
   buildPseoManifest,
@@ -366,6 +366,11 @@ async function getMemoryCachedShardPages(shardId: string): Promise<PseoPage[]> {
   }
 
   const promise = (async () => {
+    const prebaked = await loadPseoShardPages(shardId);
+    if (prebaked !== null) {
+      return prebaked;
+    }
+
     const snapshot = await getCachedSnapshotContext();
     if (snapshot) {
       const shard = getShardById(snapshot.manifest, shardId);
