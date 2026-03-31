@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+
 import { buildAbsoluteUrlForOrigin, resolveSitemapOrigin } from "@/lib/pseo/sitemap";
 import {
   getPrettySitemapPathForShard,

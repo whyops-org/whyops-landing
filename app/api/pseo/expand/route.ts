@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+
 import { whyopsPseoCatalog } from "@/lib/pseo/catalog";
 import { hydrateSourceConfig } from "@/lib/pseo/api";
 import { expandDatasetWithPublicApis } from "@/lib/pseo/expand";

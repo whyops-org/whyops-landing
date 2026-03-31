@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+
 import { JsonLd } from "@/components/JsonLd";
 import { PseoArticle } from "@/components/pseo/PseoArticle";
 import { PseoLayout } from "@/components/pseo/PseoLayout";
