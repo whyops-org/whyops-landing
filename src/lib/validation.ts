@@ -1,5 +1,3 @@
-import dns from "dns/promises";
-
 // Basic email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -58,10 +56,14 @@ async function verifyMxRecords(email: string): Promise<boolean> {
     console.warn("Error obtaining blocked domains list. Proceeding with MX check only.", error);
   }
 
-  // MX record check
+  // MX record check via DNS-over-HTTPS (edge-compatible)
   try {
-    const addresses = await dns.resolveMx(domain);
-    return addresses && addresses.length > 0;
+    const res = await fetch(
+      `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=MX`,
+    );
+    if (!res.ok) return false;
+    const data = await res.json() as { Answer?: unknown[] };
+    return Array.isArray(data.Answer) && data.Answer.length > 0;
   } catch (error) {
     console.warn("MX record check failed for:", email, error);
     return false;
