@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import type { MetadataRoute } from "next";
 import { NextResponse } from "next/server";
 

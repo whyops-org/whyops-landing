@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { fetchBlogPostsForSitemap } from "@/lib/api/hashnode";
 import { env } from "@/lib/env";
 import {

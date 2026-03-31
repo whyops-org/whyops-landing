@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { createClient } from "@/lib/supabase";
 import { verifyEmailDeliverability } from "@/lib/validation";
 import { cookies } from "next/headers";
