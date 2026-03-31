@@ -161,3 +161,151 @@
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   }
 }
+
+/* ─── Blog prose ────────────────────────────────────────────────────────────── */
+.whyops-prose {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  line-height: 1.8;
+  color: hsl(var(--foreground));
+}
+
+.dark .whyops-prose {
+  color: lab(90 0 0);
+}
+
+.whyops-prose p {
+  margin-top: 1.5em;
+  margin-bottom: 0;
+}
+
+.whyops-prose h1,
+.whyops-prose h2,
+.whyops-prose h3,
+.whyops-prose h4 {
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.25;
+  color: hsl(var(--foreground));
+  margin-top: 2.5em;
+  margin-bottom: 0.75em;
+}
+
+.dark .whyops-prose h1,
+.dark .whyops-prose h2,
+.dark .whyops-prose h3,
+.dark .whyops-prose h4 {
+  color: lab(95 0 0);
+}
+
+.whyops-prose h1 { font-size: clamp(1.75rem, 2vw + 1.25rem, 2.25rem); }
+.whyops-prose h2 { font-size: clamp(1.375rem, 1.5vw + 1rem, 1.75rem); }
+.whyops-prose h3 { font-size: clamp(1.125rem, 1vw + 0.875rem, 1.375rem); }
+.whyops-prose h4 { font-size: 1rem; font-weight: 600; }
+
+.whyops-prose a {
+  color: #eab308;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+.whyops-prose a:hover { opacity: 0.75; }
+
+.whyops-prose ul,
+.whyops-prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.5rem;
+}
+.whyops-prose ul { list-style-type: disc; }
+.whyops-prose ol { list-style-type: decimal; }
+.whyops-prose li { margin-top: 0.4em; }
+
+.whyops-prose blockquote {
+  margin: 2em 0;
+  padding: 1rem 1.5rem;
+  border-left: 2px solid #eab308;
+  background: oklab(0.205 -0.00000207871 0.00000478327 / 0.04);
+  font-style: italic;
+  color: oklab(0.205 -0.00000207871 0.00000478327 / 0.7);
+}
+.dark .whyops-prose blockquote {
+  background: oklab(0.8 0 0 / 0.06);
+  color: oklab(0.7 0 0 / 0.8);
+}
+
+.whyops-prose code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.875em;
+  background: oklab(0.205 -0.00000207871 0.00000478327 / 0.07);
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+  border: 1px dashed oklab(0.205 -0.00000207871 0.00000478327 / 0.15);
+}
+.dark .whyops-prose code {
+  background: oklab(0.8 0 0 / 0.1);
+  border-color: oklab(0.8 0 0 / 0.15);
+}
+
+.whyops-prose pre {
+  margin: 2em 0;
+  padding: 1.25rem 1.5rem;
+  background: lab(7 0 0);
+  border: 1px dashed oklab(0.8 0 0 / 0.15);
+  border-radius: 2px;
+  overflow-x: auto;
+}
+.dark .whyops-prose pre {
+  background: lab(10 0 0);
+}
+
+.whyops-prose pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+  color: lab(85 0 0);
+}
+
+.whyops-prose img {
+  max-width: 100%;
+  border-radius: 2px;
+  border: 1px dashed oklab(0.205 -0.00000207871 0.00000478327 / 0.12);
+  margin: 2em 0;
+}
+.dark .whyops-prose img {
+  border-color: oklab(0.8 0 0 / 0.12);
+}
+
+.whyops-prose hr {
+  border: none;
+  border-top: 1px dashed oklab(0.205 -0.00000207871 0.00000478327 / 0.2);
+  margin: 2.5em 0;
+}
+.dark .whyops-prose hr {
+  border-color: oklab(0.8 0 0 / 0.2);
+}
+
+.whyops-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2em 0;
+  font-size: 0.9em;
+}
+.whyops-prose th,
+.whyops-prose td {
+  padding: 0.6em 0.8em;
+  text-align: left;
+  border: 1px dashed oklab(0.205 -0.00000207871 0.00000478327 / 0.15);
+}
+.dark .whyops-prose th,
+.dark .whyops-prose td {
+  border-color: oklab(0.8 0 0 / 0.15);
+}
+.whyops-prose th {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  background: oklab(0.205 -0.00000207871 0.00000478327 / 0.05);
+}
+.dark .whyops-prose th {
+  background: oklab(0.8 0 0 / 0.06);
+}

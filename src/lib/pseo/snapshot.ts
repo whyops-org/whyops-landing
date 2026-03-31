@@ -1,5 +1,4 @@
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
-import path from "node:path";
+import { env } from "@/lib/env";
 import { resolvePseoDataset } from "@/lib/pseo/api";
 import { buildPseoManifest, generatePseoPagesForShard } from "@/lib/pseo/manifest";
 import { getSiteSourceConfig } from "@/lib/pseo/source-config";
@@ -12,37 +11,70 @@ type PseoSnapshotContext = {
   manifest: PseoManifest;
 };
 
-const SNAPSHOT_ROOT = path.join(process.cwd(), "public", "generated", "pseo");
-const SNAPSHOT_CONTEXT_PATH = path.join(SNAPSHOT_ROOT, "context.json");
-const SNAPSHOT_SHARDS_DIR = path.join(SNAPSHOT_ROOT, "shards");
-
 function shardIdToFilename(shardId: string): string {
   return shardId.replace(/:/g, "--") + ".json";
 }
 
-async function readJsonFile<T>(filePath: string): Promise<T | null> {
-  try {
-    const raw = await readFile(filePath, "utf8");
-    return JSON.parse(raw) as T;
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-      return null;
-    }
+// ─── Runtime reads ──────────────────────────────────────────────────────────
+// Strategy: try readFile first (Node.js: next build, next start),
+// then fall back to fetch (Cloudflare Workers edge runtime, where fs is unavailable).
 
-    throw error;
+export async function loadPseoSnapshotContext(): Promise<PseoSnapshotContext | null> {
+  try {
+    const { readFile } = await import("node:fs/promises");
+    const { join } = await import("node:path");
+    const raw = await readFile(
+      join(process.cwd(), "public", "generated", "pseo", "context.json"),
+      "utf8",
+    );
+    return JSON.parse(raw) as PseoSnapshotContext;
+  } catch {
+    // Edge runtime fallback: fetch from static asset CDN
+  }
+
+  try {
+    const res = await fetch(`${env.siteUrl}/generated/pseo/context.json`);
+    if (!res.ok) return null;
+    return res.json() as Promise<PseoSnapshotContext>;
+  } catch {
+    return null;
   }
 }
 
-export async function loadPseoSnapshotContext(): Promise<PseoSnapshotContext | null> {
-  return readJsonFile<PseoSnapshotContext>(SNAPSHOT_CONTEXT_PATH);
+export async function loadPseoShardPages(shardId: string): Promise<PseoPage[] | null> {
+  const filename = shardIdToFilename(shardId);
+
+  try {
+    const { readFile } = await import("node:fs/promises");
+    const { join } = await import("node:path");
+    const raw = await readFile(
+      join(process.cwd(), "public", "generated", "pseo", "shards", filename),
+      "utf8",
+    );
+    return JSON.parse(raw) as PseoPage[];
+  } catch {
+    // Edge runtime fallback: fetch from static asset CDN
+  }
+
+  try {
+    const res = await fetch(`${env.siteUrl}/generated/pseo/shards/${filename}`);
+    if (!res.ok) return null;
+    return res.json() as Promise<PseoPage[]>;
+  } catch {
+    return null;
+  }
 }
 
-export async function loadPseoShardPages(shardId: string): Promise<PseoPage[] | null> {
-  const filePath = path.join(SNAPSHOT_SHARDS_DIR, shardIdToFilename(shardId));
-  return readJsonFile<PseoPage[]>(filePath);
-}
+// ─── Build-time write (Node.js only — called from generate-pseo-snapshot.ts) ─
 
 export async function writePseoSnapshot() {
+  const { mkdir, rm, writeFile } = await import("node:fs/promises");
+  const { join } = await import("node:path");
+
+  const snapshotRoot = join(process.cwd(), "public", "generated", "pseo");
+  const contextPath = join(snapshotRoot, "context.json");
+  const shardsDir = join(snapshotRoot, "shards");
+
   const resolved = await resolvePseoDataset(undefined, getSiteSourceConfig());
   const manifest = buildPseoManifest(resolved.normalized_dataset);
 
@@ -53,9 +85,9 @@ export async function writePseoSnapshot() {
     manifest,
   };
 
-  await rm(SNAPSHOT_ROOT, { recursive: true, force: true });
-  await mkdir(SNAPSHOT_SHARDS_DIR, { recursive: true });
-  await writeFile(SNAPSHOT_CONTEXT_PATH, JSON.stringify(snapshotContext), "utf8");
+  await rm(snapshotRoot, { recursive: true, force: true });
+  await mkdir(shardsDir, { recursive: true });
+  await writeFile(contextPath, JSON.stringify(snapshotContext), "utf8");
 
   // Only pre-generate small, high-priority shards at build time.
   // Large location/translation-location shards (750–2400 pages each) are too
@@ -71,7 +103,7 @@ export async function writePseoSnapshot() {
     prebakeShards.map(async (shard) => {
       const result = generatePseoPagesForShard(resolved.normalized_dataset, shard);
       const pages: PseoPage[] = result.status === "OK" && result.pages ? result.pages : [];
-      const filePath = path.join(SNAPSHOT_SHARDS_DIR, shardIdToFilename(shard.id));
+      const filePath = join(shardsDir, shardIdToFilename(shard.id));
       await writeFile(filePath, JSON.stringify(pages), "utf8");
       done += 1;
       console.log(`  [${done}/${prebakeShards.length}] ${shard.id} (${pages.length} pages)`);
@@ -80,8 +112,8 @@ export async function writePseoSnapshot() {
 
   return {
     manifest,
-    output_path: SNAPSHOT_CONTEXT_PATH,
-    shards_dir: SNAPSHOT_SHARDS_DIR,
+    output_path: contextPath,
+    shards_dir: shardsDir,
     prebaked_shards: prebakeShards.length,
   };
 }

@@ -8,21 +8,18 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const origin = resolveSitemapOrigin(request);
-  const pseoPaths = await getSitePseoLeafSitemapPaths();
+
+  // Fetch the individual pSEO leaf sitemap paths (<urlset> files, never indexes)
+  const pseoLeafPaths = await getSitePseoLeafSitemapPaths();
+
+  // Flat list: static + each pSEO leaf + blog — all are <urlset> sitemaps
   const entries = [
-    {
-      url: buildAbsoluteUrlForOrigin("/sitemaps/static.xml", origin),
-      lastModified: "2026-03-29",
-    },
-    ...pseoPaths.map((pathname) => ({
-      url: buildAbsoluteUrlForOrigin(pathname, origin),
-      lastModified: "2026-03-30",
-    })),
-  ];
+    "/sitemaps/static.xml",
+    ...pseoLeafPaths,
+    "/sitemaps/blog.xml",
+  ].map((pathname) => ({ url: buildAbsoluteUrlForOrigin(pathname, origin) }));
 
   return new NextResponse(renderSitemapIndex(entries), {
-    headers: {
-      "Content-Type": "application/xml",
-    },
+    headers: { "Content-Type": "application/xml" },
   });
 }
