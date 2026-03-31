@@ -1,4 +1,4 @@
-import { writePseoSnapshot } from "@/lib/pseo/snapshot";
+import { writePseoSnapshot } from "@/lib/pseo/snapshot-write";
 
 async function main() {
   const result = await writePseoSnapshot();
