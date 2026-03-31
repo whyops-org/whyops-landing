@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 
 import { createClient } from "@/lib/supabase";
 import { verifyEmailDeliverability } from "@/lib/validation";

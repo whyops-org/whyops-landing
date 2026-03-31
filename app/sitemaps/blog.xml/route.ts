@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 
 import { fetchBlogPostsForSitemap } from "@/lib/api/hashnode";
 import { env } from "@/lib/env";

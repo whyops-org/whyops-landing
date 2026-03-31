@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 
 import { whyopsPseoCatalog } from "@/lib/pseo/catalog";
 import { hydrateSourceConfig } from "@/lib/pseo/api";
