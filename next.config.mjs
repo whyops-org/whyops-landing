@@ -1,12 +1,9 @@
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
-
-initOpenNextCloudflareForDev();
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['lucide-react'],
-  distDir: process.env.NEXT_DIST_DIR || '.next',
+  // Only set distDir when explicitly requested (local dev via run-next-dev.mjs)
+  ...(process.env.NEXT_DIST_DIR ? { distDir: process.env.NEXT_DIST_DIR } : {}),
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.hashnode.com' },
