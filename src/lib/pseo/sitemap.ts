@@ -135,6 +135,16 @@ export function pageToSitemapEntry(page: PseoPage, origin = env.siteUrl): Sitema
   };
 }
 
+export function urlToSitemapEntry(url: string, origin = env.siteUrl): SitemapEntry {
+  const pathname = new URL(url).pathname;
+  return {
+    url: buildAbsoluteUrlForOrigin(pathname, origin),
+    lastModified: DEFAULT_LAST_MODIFIED,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  };
+}
+
 export function shardSortKey(shard: PseoManifestShard) {
   return [
     shard.kind,

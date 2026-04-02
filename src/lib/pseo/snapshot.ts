@@ -68,6 +68,18 @@ export async function loadPseoSnapshotContext(): Promise<PseoSnapshotContext | n
   }
 }
 
+export async function loadPseoShardUrls(shardId: string): Promise<string[] | null> {
+  try {
+    const res = await fetch(
+      `${env.siteUrl}/generated/pseo/shards/urls--${shardIdToFilename(shardId)}`,
+    );
+    if (!res.ok) return null;
+    return res.json() as Promise<string[]>;
+  } catch {
+    return null;
+  }
+}
+
 export async function loadPseoShardPages(shardId: string): Promise<PseoPage[] | null> {
   try {
     const res = await fetch(

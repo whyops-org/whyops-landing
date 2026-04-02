@@ -9,6 +9,7 @@ import { resolvePseoDataset } from "@/lib/pseo/api";
 import {
   loadPseoRoutingIndex,
   loadPseoShardPages,
+  loadPseoShardUrls,
   loadPseoSnapshotContext,
   type PseoRoutingIndex,
 } from "@/lib/pseo/snapshot";
@@ -73,6 +74,7 @@ async function getCachedSitePseoContext(): Promise<SitePseoContext> {
 }
 
 const shardPageCache = new Map<string, Promise<PseoPage[]>>();
+const shardUrlCache = new Map<string, Promise<string[]>>();
 const resolvedPageCache = new Map<string, Promise<PseoPage | null>>();
 
 async function getResolvedManifest(): Promise<PseoManifest> {
@@ -447,6 +449,25 @@ export async function getSitePseoContext() {
 
 export async function getSitePseoShardPages(shardId: string) {
   return getMemoryCachedShardPages(shardId);
+}
+
+// Returns only the URLs for a shard — much cheaper than getSitePseoShardPages.
+// Uses the pre-generated URL-only index file (~50-150KB) instead of triggering
+// full page generation (which can be 2500+ pages × 8KB each in Workers).
+export async function getSitePseoShardUrls(shardId: string): Promise<string[]> {
+  const existing = shardUrlCache.get(shardId);
+  if (existing) return existing;
+
+  const promise = (async () => {
+    const urls = await loadPseoShardUrls(shardId);
+    if (urls !== null) return urls;
+    // Fallback: extract URLs from full pages (only reached if URL index wasn't generated)
+    const pages = await getMemoryCachedShardPages(shardId);
+    return pages.map((p) => p.url);
+  })();
+
+  shardUrlCache.set(shardId, promise);
+  return promise;
 }
 
 export async function getSitePseoShard(shardId: string): Promise<PseoManifestShard | null> {

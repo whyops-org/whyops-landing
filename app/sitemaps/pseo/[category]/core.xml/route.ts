@@ -1,11 +1,11 @@
 export const dynamic = 'force-dynamic';
 
 import {
-  pageToSitemapEntry,
   renderUrlSet,
   resolveSitemapOrigin,
+  urlToSitemapEntry,
 } from "@/lib/pseo/sitemap";
-import { getSitePseoCategoryShardGroups, getSitePseoShardPages } from "@/lib/pseo/site";
+import { getSitePseoCategoryShardGroups, getSitePseoShardUrls } from "@/lib/pseo/site";
 import { NextResponse } from "next/server";
 
 type RouteProps = {
@@ -23,12 +23,12 @@ export async function GET(_request: Request, { params }: RouteProps) {
     return new NextResponse("Not found", { status: 404 });
   }
 
-  const pages = await getSitePseoShardPages(groups.core.id);
-  if (!pages.length) {
+  const urls = await getSitePseoShardUrls(groups.core.id);
+  if (!urls.length) {
     return new NextResponse("Not found", { status: 404 });
   }
 
-  return new NextResponse(renderUrlSet(pages.map((page) => pageToSitemapEntry(page, origin))), {
+  return new NextResponse(renderUrlSet(urls.map((url) => urlToSitemapEntry(url, origin))), {
     headers: {
       "Content-Type": "application/xml",
     },
