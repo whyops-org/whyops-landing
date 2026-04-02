@@ -31,11 +31,7 @@ export async function writePseoSnapshot() {
   await writeFile(SNAPSHOT_CONTEXT_PATH, JSON.stringify(snapshotContext), "utf8");
 
   const prebakeShards = manifest.shards.filter(
-    (shard) =>
-      shard.kind === "global-utility" ||
-      shard.kind === "category-core" ||
-      shard.kind === "category-location" ||
-      shard.kind === "category-translation-core",
+    (shard) => shard.kind === "global-utility" || shard.kind === "category-core",
   );
 
   console.log(`Pre-generating pages for ${prebakeShards.length} core shards...`);
