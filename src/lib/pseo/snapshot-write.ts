@@ -31,7 +31,11 @@ export async function writePseoSnapshot() {
   await writeFile(SNAPSHOT_CONTEXT_PATH, JSON.stringify(snapshotContext), "utf8");
 
   const prebakeShards = manifest.shards.filter(
-    (shard) => shard.kind === "global-utility" || shard.kind === "category-core",
+    (shard) =>
+      shard.kind === "global-utility" ||
+      shard.kind === "category-core" ||
+      shard.kind === "category-location" ||
+      shard.kind === "category-translation-core",
   );
 
   console.log(`Pre-generating pages for ${prebakeShards.length} core shards...`);
@@ -47,6 +51,53 @@ export async function writePseoSnapshot() {
       console.log(`  [${done}/${prebakeShards.length}] ${shard.id} (${pages.length} pages)`);
     }),
   );
+
+  // Write a lightweight routing index (slim manifest + routing slugs only).
+  // This is loaded on every cold Worker start instead of the full 964KB context.json.
+  const routingIndex = {
+    version: 1 as const,
+    generated_at: snapshotContext.generated_at,
+    manifest: {
+      shard_count: manifest.shard_count,
+      total_estimated_pages: manifest.total_estimated_pages,
+      options: manifest.options,
+      shards: manifest.shards.map((shard) => {
+        const slim: Record<string, unknown> = {
+          id: shard.id,
+          kind: shard.kind,
+          ownership_scope: shard.ownership_scope,
+        };
+        if (shard.category_slug !== undefined) slim.category_slug = shard.category_slug;
+        if (shard.location_offset !== undefined) slim.location_offset = shard.location_offset;
+        if (shard.location_limit !== undefined) slim.location_limit = shard.location_limit;
+        if (shard.language_offset !== undefined) slim.language_offset = shard.language_offset;
+        if (shard.language_limit !== undefined) slim.language_limit = shard.language_limit;
+        return slim;
+      }),
+    },
+    routing_dataset: {
+      categories: resolved.normalized_dataset.categories.map((c) => ({
+        slug: c.slug,
+        glossaryTerms: c.glossaryTerms,
+      })),
+      locations: resolved.normalized_dataset.locations.map((l) => ({ slug: l.slug })),
+      languages: resolved.normalized_dataset.languages.map((l) => ({ slug: l.slug })),
+      tools: resolved.normalized_dataset.tools.map((t) => ({
+        slug: t.slug,
+        name: t.name,
+        website: t.website,
+        category: t.category,
+      })),
+      profiles: resolved.normalized_dataset.profiles.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        company: p.company,
+      })),
+    },
+  };
+
+  const routingIndexPath = path.join(SNAPSHOT_ROOT, "routing-index.json");
+  await writeFile(routingIndexPath, JSON.stringify(routingIndex), "utf8");
 
   return {
     manifest,

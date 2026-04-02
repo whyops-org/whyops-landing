@@ -6,7 +6,12 @@ import {
   buildGlobalUtilitySitemapPath,
 } from "@/lib/pseo/sitemap";
 import { resolvePseoDataset } from "@/lib/pseo/api";
-import { loadPseoShardPages, loadPseoSnapshotContext } from "@/lib/pseo/snapshot";
+import {
+  loadPseoRoutingIndex,
+  loadPseoShardPages,
+  loadPseoSnapshotContext,
+  type PseoRoutingIndex,
+} from "@/lib/pseo/snapshot";
 import { getSiteSourceConfig } from "@/lib/pseo/source-config";
 import {
   buildPseoManifest,
@@ -36,6 +41,14 @@ type CategoryShardGroups = {
 let siteContextPromise: Promise<SitePseoContext> | null = null;
 let snapshotContextPromise: Promise<Awaited<ReturnType<typeof loadPseoSnapshotContext>>> | null =
   null;
+let routingIndexPromise: Promise<PseoRoutingIndex | null> | null = null;
+
+async function getCachedRoutingIndex(): Promise<PseoRoutingIndex | null> {
+  if (!routingIndexPromise) {
+    routingIndexPromise = loadPseoRoutingIndex();
+  }
+  return routingIndexPromise;
+}
 
 async function getCachedSnapshotContext() {
   if (!snapshotContextPromise) {
@@ -63,6 +76,13 @@ const shardPageCache = new Map<string, Promise<PseoPage[]>>();
 const resolvedPageCache = new Map<string, Promise<PseoPage | null>>();
 
 async function getResolvedManifest(): Promise<PseoManifest> {
+  // Prefer the lightweight routing index (145KB) over the full context (964KB).
+  // The routing index manifest has all shard IDs and options needed for routing/sitemaps.
+  const routingIndex = await getCachedRoutingIndex();
+  if (routingIndex?.manifest) {
+    return routingIndex.manifest as PseoManifest;
+  }
+
   const snapshot = await getCachedSnapshotContext();
   if (snapshot?.manifest) {
     return snapshot.manifest;
@@ -531,6 +551,34 @@ export async function resolveSitePseoPageByPath(pathname: string): Promise<PseoP
   }
 
   const promise = (async () => {
+    // Prefer the lightweight routing index (~145KB) over the full snapshot context (~964KB).
+    // This avoids loading the full normalized_dataset just to infer a shard ID.
+    // If the shard is pre-baked, the full context is never loaded at all.
+    const routingIndex = await getCachedRoutingIndex();
+    if (routingIndex) {
+      const routingDataset = routingIndex.routing_dataset as unknown as NormalizedDataset;
+      const candidateShardIds = inferCandidateShardIds(
+        normalizedPath,
+        routingDataset,
+        routingIndex.manifest as PseoManifest,
+      );
+
+      for (const shardId of candidateShardIds) {
+        const shard = getShardById(routingIndex.manifest as PseoManifest, shardId);
+        if (!shard) {
+          continue;
+        }
+
+        const page = await resolvePageFromCandidateShard(normalizedPath, shard);
+        if (page) {
+          return page;
+        }
+      }
+
+      return null;
+    }
+
+    // Fallback: full snapshot context (used if routing-index.json hasn't been generated yet).
     const snapshot = await getCachedSnapshotContext();
     if (snapshot) {
       const candidateShardIds = inferCandidateShardIds(
