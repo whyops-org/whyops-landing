@@ -2997,6 +2997,10 @@ function attachLinks(pages: DraftPage[]): DraftPage[] {
   return attachDraftLinks(pages);
 }
 
+function attachLinksLenient(pages: DraftPage[]): DraftPage[] {
+  return attachDraftLinks(pages, false);
+}
+
 function validateCandidates(pages: DraftPage[]): {
   validPages: DraftPage[];
   rejectionReasons: Record<string, number>;
@@ -3178,6 +3182,58 @@ export function generatePseoValidatedSet(
         linked: countPlaybooks(linkedCandidates),
         valid: countPlaybooks(ordered),
         rejection_reasons: stabilizationResult.rejectionReasons,
+      },
+    },
+  };
+}
+
+export function generatePseoLinkedSet(
+  dataset: NormalizedDataset,
+  request: Pick<PseoBatchRequest, "basePath" | "includePlaybooks" | "targetPages">,
+): {
+  status: "OK" | "SKIPPED";
+  reason?: string;
+  pages?: PseoPage[];
+  stats?: NonNullable<PseoBatchResponse["stats"]>;
+} {
+  const basePath = request.basePath || "";
+  const targetPages = request.targetPages;
+  const includedPlaybooks = request.includePlaybooks
+    ? new Set(request.includePlaybooks)
+    : null;
+
+  const rawCandidates = buildAllCandidates(dataset, basePath).filter((candidate) =>
+    includedPlaybooks ? includedPlaybooks.has(candidate.playbook_type) : true,
+  );
+
+  if (rawCandidates.length === 0) {
+    return {
+      status: "SKIPPED",
+      reason: "No valid page candidates could be generated from the provided dataset.",
+    };
+  }
+
+  const linkedCandidates = attachLinksLenient(rawCandidates);
+  const uniquePlaybooks = dedupe(linkedCandidates.map((page) => page.playbook_type)) as PlaybookType[];
+
+  return {
+    status: "OK",
+    pages: linkedCandidates.map(stripDraftFields),
+    stats: {
+      requested_batch_size: BATCH_LIMIT,
+      returned_pages: linkedCandidates.length,
+      total_candidate_pages: rawCandidates.length,
+      total_valid_pages: linkedCandidates.length,
+      unique_playbooks: uniquePlaybooks,
+      rejected_pages: rawCandidates.length - linkedCandidates.length,
+      meets_target_pages: typeof targetPages === "number" ? linkedCandidates.length >= targetPages : undefined,
+      target_pages: targetPages,
+      playbook_counts: countPlaybooks(linkedCandidates),
+      generation_diagnostics: {
+        raw: countPlaybooks(rawCandidates),
+        linked: countPlaybooks(linkedCandidates),
+        valid: countPlaybooks(linkedCandidates),
+        rejection_reasons: {},
       },
     },
   };

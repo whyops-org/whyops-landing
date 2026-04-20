@@ -4,6 +4,7 @@ import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { resolvePseoDataset } from "@/lib/pseo/api";
 import { buildPseoManifest, generatePseoPagesForShard } from "@/lib/pseo/manifest";
+import { generatePseoUrlsForShard } from "@/lib/pseo/shard-urls";
 import { getSiteSourceConfig } from "@/lib/pseo/source-config";
 import type { PseoPage } from "@/lib/pseo/types";
 
@@ -45,6 +46,21 @@ export async function writePseoSnapshot() {
       await writeFile(filePath, JSON.stringify(pages), "utf8");
       done += 1;
       console.log(`  [${done}/${prebakeShards.length}] ${shard.id} (${pages.length} pages)`);
+    }),
+  );
+
+  console.log(`Generating URL indexes for ${manifest.shards.length} shards...`);
+  let urlsDone = 0;
+
+  await Promise.all(
+    manifest.shards.map(async (shard) => {
+      const urls = generatePseoUrlsForShard(resolved.normalized_dataset, shard);
+      const filePath = path.join(SNAPSHOT_SHARDS_DIR, `urls--${shardIdToFilename(shard.id)}`);
+      await writeFile(filePath, JSON.stringify(urls), "utf8");
+      urlsDone += 1;
+      if (urlsDone % 50 === 0 || urlsDone === manifest.shards.length) {
+        console.log(`  URL indexes: ${urlsDone}/${manifest.shards.length}`);
+      }
     }),
   );
 

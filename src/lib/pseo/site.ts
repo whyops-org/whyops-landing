@@ -20,6 +20,7 @@ import {
   getShardById,
 } from "@/lib/pseo/manifest";
 import { slugify } from "@/lib/pseo/normalize";
+import { generatePseoUrlsForShard } from "@/lib/pseo/shard-urls";
 import type {
   NormalizedDataset,
   PseoManifest,
@@ -470,10 +471,24 @@ export async function getSitePseoShardUrls(shardId: string): Promise<string[]> {
   const promise = (async () => {
     const urls = await loadPseoShardUrls(shardId);
     if (urls !== null) return urls;
-    // Exact fallback: sitemap URLs come from the same generator as page resolution.
-    // This avoids any drift between indexed URLs and accessible pages.
-    const pages = await getMemoryCachedShardPages(shardId);
-    return pages.map((page) => page.url);
+
+    const snapshot = await getCachedSnapshotContext();
+    if (snapshot) {
+      const shard = getShardById(snapshot.manifest, shardId);
+      if (!shard) {
+        return [];
+      }
+
+      return generatePseoUrlsForShard(snapshot.normalized_dataset, shard);
+    }
+
+    const context = await getCachedSitePseoContext();
+    const shard = getShardById(context.manifest, shardId);
+    if (!shard) {
+      return [];
+    }
+
+    return generatePseoUrlsForShard(context.normalized_dataset, shard);
   })();
 
   if (isPrebakedShardId(shardId)) {

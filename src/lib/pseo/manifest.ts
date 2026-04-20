@@ -1,4 +1,4 @@
-import { generatePseoValidatedSet } from "@/lib/pseo/generator";
+import { generatePseoLinkedSet, generatePseoValidatedSet } from "@/lib/pseo/generator";
 import { dedupe, slugify } from "@/lib/pseo/normalize";
 import type {
   NormalizedDataset,
@@ -540,17 +540,24 @@ export function generatePseoPagesForShard(
   stats?: NonNullable<PseoBatchResponse["stats"]>;
 } {
   const filtered = filterDatasetForShard(dataset, shard);
-  const validated = generatePseoValidatedSet(filtered, {
-    basePath,
-    includePlaybooks: shard.playbooks,
-    targetPages: shard.estimated_pages,
-  });
+  const generatedSet =
+    shard.kind === "global-utility" || shard.kind === "category-core"
+      ? generatePseoValidatedSet(filtered, {
+          basePath,
+          includePlaybooks: shard.playbooks,
+          targetPages: shard.estimated_pages,
+        })
+      : generatePseoLinkedSet(filtered, {
+          basePath,
+          includePlaybooks: shard.playbooks,
+          targetPages: shard.estimated_pages,
+        });
 
-  if (validated.status === "SKIPPED" || !validated.pages || !validated.stats) {
-    return validated;
+  if (generatedSet.status === "SKIPPED" || !generatedSet.pages || !generatedSet.stats) {
+    return generatedSet;
   }
 
-  const ownedPages = validated.pages.filter((page) => ownsPage(page, filtered, shard));
+  const ownedPages = generatedSet.pages.filter((page) => ownsPage(page, filtered, shard));
 
   if (ownedPages.length === 0) {
     return {
@@ -565,17 +572,17 @@ export function generatePseoPagesForShard(
     stats: {
       requested_batch_size: ownedPages.length,
       returned_pages: ownedPages.length,
-      total_candidate_pages: validated.stats.total_candidate_pages,
+      total_candidate_pages: generatedSet.stats.total_candidate_pages,
       total_valid_pages: ownedPages.length,
       unique_playbooks: dedupe(ownedPages.map((page) => page.playbook_type)) as PlaybookType[],
-      rejected_pages: validated.stats.total_candidate_pages - ownedPages.length,
+      rejected_pages: generatedSet.stats.total_candidate_pages - ownedPages.length,
       meets_target_pages:
-        typeof validated.stats.target_pages === "number"
-          ? ownedPages.length >= validated.stats.target_pages
+        typeof generatedSet.stats.target_pages === "number"
+          ? ownedPages.length >= generatedSet.stats.target_pages
           : undefined,
-      target_pages: validated.stats.target_pages,
+      target_pages: generatedSet.stats.target_pages,
       playbook_counts: countPlaybooks(ownedPages),
-      generation_diagnostics: validated.stats.generation_diagnostics,
+      generation_diagnostics: generatedSet.stats.generation_diagnostics,
     },
   };
 }

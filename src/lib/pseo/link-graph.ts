@@ -133,7 +133,7 @@ function pickRelatedIndexes<T extends LinkablePage>(
   ).slice(0, limit);
 }
 
-export function attachDraftLinks<T extends LinkablePage>(pages: T[]): T[] {
+export function attachDraftLinks<T extends LinkablePage>(pages: T[], strict = true): T[] {
   const pathnameMap = new Map<string, number>();
   const topicMap = new Map<string, number[]>();
   const entityMap = new Map<string, number[]>();
@@ -156,7 +156,7 @@ export function attachDraftLinks<T extends LinkablePage>(pages: T[]): T[] {
     related: buildRelatedSet(index, page, topicMap, entityMap),
   }));
 
-  return records
+  const linked = records
     .map((record) => {
       const parentIndex =
         findStructuralParentIndex(record.pathname, pathnameMap) ??
@@ -184,17 +184,19 @@ export function attachDraftLinks<T extends LinkablePage>(pages: T[]): T[] {
         2,
       );
 
-      if (parentIndex === null || siblingIndexes.length < 2 || crossPlaybookIndexes.length < 2) {
+      if (strict && (parentIndex === null || siblingIndexes.length < 2 || crossPlaybookIndexes.length < 2)) {
         return null;
       }
 
       const siblings = [...siblingIndexes, ...supplementalIndexes];
       const internalLinks = dedupeByUrl([
-        {
-          url: records[parentIndex].page.url,
-          anchor: records[parentIndex].page.content.h1,
-          relation: "parent" as const,
-        },
+        ...(parentIndex === null
+          ? []
+          : [{
+              url: records[parentIndex].page.url,
+              anchor: records[parentIndex].page.content.h1,
+              relation: "parent" as const,
+            }]),
         ...siblings.map((index) => ({
           url: records[index].page.url,
           anchor: records[index].page.content.h1,
@@ -223,6 +225,7 @@ export function attachDraftLinks<T extends LinkablePage>(pages: T[]): T[] {
         internal_links: internalLinks,
         related_pages: relatedPages,
       };
-    })
-    .filter((page): page is T => Boolean(page));
+    });
+
+  return strict ? linked.filter((page): page is T => Boolean(page)) : linked.filter(Boolean) as T[];
 }
