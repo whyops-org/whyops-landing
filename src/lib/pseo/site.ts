@@ -20,6 +20,7 @@ import {
   getShardById,
 } from "@/lib/pseo/manifest";
 import { slugify } from "@/lib/pseo/normalize";
+import { resolveDynamicPageFromShard } from "@/lib/pseo/dynamic-page-resolver";
 import { generatePseoUrlsForShard } from "@/lib/pseo/shard-urls";
 import type {
   NormalizedDataset,
@@ -439,6 +440,16 @@ async function resolvePageFromCandidateShard(
   pathname: string,
   shard: PseoManifestShard,
 ): Promise<PseoPage | null> {
+  if (!isPrebakedShardId(shard.id)) {
+    const snapshot = await getCachedSnapshotContext();
+    if (snapshot) {
+      return resolveDynamicPageFromShard(snapshot.normalized_dataset, shard, pathname);
+    }
+
+    const context = await getCachedSitePseoContext();
+    return resolveDynamicPageFromShard(context.normalized_dataset, shard, pathname);
+  }
+
   const pages = await getMemoryCachedShardPages(shard.id);
   return pages.find((page) => pathnameFromPage(page) === normalizePathname(pathname)) || null;
 }
