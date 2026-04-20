@@ -22,6 +22,7 @@ export async function GET(request: Request) {
   ].map((pathname) => ({ url: buildAbsoluteUrlForOrigin(pathname, origin) }));
 
   return new NextResponse(renderSitemapIndex(entries), {
-    headers: { "Content-Type": "application/xml" },
+    headers: { "Content-Type": "application/xml",
+      "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
   });
 }

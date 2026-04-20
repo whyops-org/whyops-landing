@@ -75,7 +75,10 @@ async function getCachedSitePseoContext(): Promise<SitePseoContext> {
 
 const shardPageCache = new Map<string, Promise<PseoPage[]>>();
 const shardUrlCache = new Map<string, Promise<string[]>>();
-const resolvedPageCache = new Map<string, Promise<PseoPage | null>>();
+
+function isPrebakedShardId(shardId: string): boolean {
+  return shardId === "global:utility" || shardId.startsWith("core:");
+}
 
 async function getResolvedManifest(): Promise<PseoManifest> {
   // Prefer the lightweight routing index (145KB) over the full context (964KB).
@@ -382,9 +385,11 @@ function inferCandidateShardIds(
 }
 
 async function getMemoryCachedShardPages(shardId: string): Promise<PseoPage[]> {
-  const existing = shardPageCache.get(shardId);
-  if (existing) {
-    return existing;
+  if (isPrebakedShardId(shardId)) {
+    const existing = shardPageCache.get(shardId);
+    if (existing) {
+      return existing;
+    }
   }
 
   const promise = (async () => {
@@ -423,7 +428,9 @@ async function getMemoryCachedShardPages(shardId: string): Promise<PseoPage[]> {
     return generated.status === "OK" && generated.pages ? generated.pages : [];
   })();
 
-  shardPageCache.set(shardId, promise);
+  if (isPrebakedShardId(shardId)) {
+    shardPageCache.set(shardId, promise);
+  }
   return promise;
 }
 
@@ -455,18 +462,23 @@ export async function getSitePseoShardPages(shardId: string) {
 // Uses the pre-generated URL-only index file (~50-150KB) instead of triggering
 // full page generation (which can be 2500+ pages × 8KB each in Workers).
 export async function getSitePseoShardUrls(shardId: string): Promise<string[]> {
-  const existing = shardUrlCache.get(shardId);
-  if (existing) return existing;
+  if (isPrebakedShardId(shardId)) {
+    const existing = shardUrlCache.get(shardId);
+    if (existing) return existing;
+  }
 
   const promise = (async () => {
     const urls = await loadPseoShardUrls(shardId);
     if (urls !== null) return urls;
-    // Fallback: extract URLs from full pages (only reached if URL index wasn't generated)
+    // Exact fallback: sitemap URLs come from the same generator as page resolution.
+    // This avoids any drift between indexed URLs and accessible pages.
     const pages = await getMemoryCachedShardPages(shardId);
-    return pages.map((p) => p.url);
+    return pages.map((page) => page.url);
   })();
 
-  shardUrlCache.set(shardId, promise);
+  if (isPrebakedShardId(shardId)) {
+    shardUrlCache.set(shardId, promise);
+  }
   return promise;
 }
 
@@ -566,89 +578,79 @@ export async function getPrettySitemapPathForShard(
 
 export async function resolveSitePseoPageByPath(pathname: string): Promise<PseoPage | null> {
   const normalizedPath = normalizePathname(pathname);
-  const cached = resolvedPageCache.get(normalizedPath);
-  if (cached) {
-    return cached;
-  }
-
-  const promise = (async () => {
-    // Prefer the lightweight routing index (~145KB) over the full snapshot context (~964KB).
-    // This avoids loading the full normalized_dataset just to infer a shard ID.
-    // If the shard is pre-baked, the full context is never loaded at all.
-    const routingIndex = await getCachedRoutingIndex();
-    if (routingIndex) {
-      const routingDataset = routingIndex.routing_dataset as unknown as NormalizedDataset;
-      const candidateShardIds = inferCandidateShardIds(
-        normalizedPath,
-        routingDataset,
-        routingIndex.manifest as PseoManifest,
-      );
-
-      for (const shardId of candidateShardIds) {
-        const shard = getShardById(routingIndex.manifest as PseoManifest, shardId);
-        if (!shard) {
-          continue;
-        }
-
-        const page = await resolvePageFromCandidateShard(normalizedPath, shard);
-        if (page) {
-          return page;
-        }
-      }
-
-      return null;
-    }
-
-    // Fallback: full snapshot context (used if routing-index.json hasn't been generated yet).
-    const snapshot = await getCachedSnapshotContext();
-    if (snapshot) {
-      const candidateShardIds = inferCandidateShardIds(
-        normalizedPath,
-        snapshot.normalized_dataset,
-        snapshot.manifest,
-      );
-
-      for (const shardId of candidateShardIds) {
-        const shard = getShardById(snapshot.manifest, shardId);
-        if (!shard) {
-          continue;
-        }
-
-        const page = await resolvePageFromCandidateShard(normalizedPath, shard);
-        if (page) {
-          return page;
-        }
-      }
-
-      return null;
-    }
-
-    const context = await getCachedSitePseoContext();
+  // Prefer the lightweight routing index (~145KB) over the full snapshot context (~964KB).
+  // This avoids loading the full normalized_dataset just to infer a shard ID.
+  // If the shard is pre-baked, the full context is never loaded at all.
+  const routingIndex = await getCachedRoutingIndex();
+  if (routingIndex) {
+    const routingDataset = routingIndex.routing_dataset as unknown as NormalizedDataset;
     const candidateShardIds = inferCandidateShardIds(
       normalizedPath,
-      context.normalized_dataset,
-      context.manifest,
+      routingDataset,
+      routingIndex.manifest as PseoManifest,
     );
 
     for (const shardId of candidateShardIds) {
-      const shard = getShardById(context.manifest, shardId);
+      const shard = getShardById(routingIndex.manifest as PseoManifest, shardId);
       if (!shard) {
         continue;
       }
 
-      const page = await resolvePageFromCandidateShard(
-        normalizedPath,
-        shard,
-      );
-
+      const page = await resolvePageFromCandidateShard(normalizedPath, shard);
       if (page) {
         return page;
       }
     }
 
     return null;
-  })();
+  }
 
-  resolvedPageCache.set(normalizedPath, promise);
-  return promise;
+  // Fallback: full snapshot context (used if routing-index.json hasn't been generated yet).
+  const snapshot = await getCachedSnapshotContext();
+  if (snapshot) {
+    const candidateShardIds = inferCandidateShardIds(
+      normalizedPath,
+      snapshot.normalized_dataset,
+      snapshot.manifest,
+    );
+
+    for (const shardId of candidateShardIds) {
+      const shard = getShardById(snapshot.manifest, shardId);
+      if (!shard) {
+        continue;
+      }
+
+      const page = await resolvePageFromCandidateShard(normalizedPath, shard);
+      if (page) {
+        return page;
+      }
+    }
+
+    return null;
+  }
+
+  const context = await getCachedSitePseoContext();
+  const candidateShardIds = inferCandidateShardIds(
+    normalizedPath,
+    context.normalized_dataset,
+    context.manifest,
+  );
+
+  for (const shardId of candidateShardIds) {
+    const shard = getShardById(context.manifest, shardId);
+    if (!shard) {
+      continue;
+    }
+
+    const page = await resolvePageFromCandidateShard(
+      normalizedPath,
+      shard,
+    );
+
+    if (page) {
+      return page;
+    }
+  }
+
+  return null;
 }

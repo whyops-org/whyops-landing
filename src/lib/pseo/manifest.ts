@@ -40,15 +40,9 @@ const CATEGORY_CORE_PLAYBOOKS: PlaybookType[] = [
   "profiles",
 ];
 
-const CATEGORY_LOCATION_PLAYBOOKS: PlaybookType[] = [
-  ...CATEGORY_CORE_PLAYBOOKS,
-  "locations",
-];
+const CATEGORY_LOCATION_PLAYBOOKS: PlaybookType[] = ["locations", "glossary"];
 
-const CATEGORY_TRANSLATION_PLAYBOOKS: PlaybookType[] = [
-  ...CATEGORY_CORE_PLAYBOOKS,
-  "translations",
-];
+const CATEGORY_TRANSLATION_PLAYBOOKS: PlaybookType[] = ["translations", "glossary"];
 
 function resolveOptions(options?: PseoManifestOptions): Required<PseoManifestOptions> {
   return {

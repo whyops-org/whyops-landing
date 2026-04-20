@@ -48,28 +48,6 @@ export async function writePseoSnapshot() {
     }),
   );
 
-  // Write a URL-only index for every shard (all 505 including location/translation).
-  // Sitemap routes only need URLs, not full page content. Each URL file is ~50-150KB
-  // vs ~20MB for full page content — safe to load at runtime in a Worker.
-  console.log(`Generating URL-only indexes for all ${manifest.shards.length} shards...`);
-  let urlsDone = 0;
-  await Promise.all(
-    manifest.shards.map(async (shard) => {
-      const result = generatePseoPagesForShard(resolved.normalized_dataset, shard);
-      const urls: string[] =
-        result.status === "OK" && result.pages ? result.pages.map((p) => p.url) : [];
-      const urlsFilePath = path.join(
-        SNAPSHOT_SHARDS_DIR,
-        "urls--" + shardIdToFilename(shard.id),
-      );
-      await writeFile(urlsFilePath, JSON.stringify(urls), "utf8");
-      urlsDone += 1;
-      if (urlsDone % 50 === 0 || urlsDone === manifest.shards.length) {
-        console.log(`  URL indexes: ${urlsDone}/${manifest.shards.length}`);
-      }
-    }),
-  );
-
   // Write a lightweight routing index (slim manifest + routing slugs only).
   // This is loaded on every cold Worker start instead of the full 964KB context.json.
   const routingIndex = {

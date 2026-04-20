@@ -24,6 +24,7 @@ export async function GET(request: Request) {
   return new NextResponse(renderUrlSet(urls.map((url) => urlToSitemapEntry(url, origin))), {
     headers: {
       "Content-Type": "application/xml",
+      "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
     },
   });
 }

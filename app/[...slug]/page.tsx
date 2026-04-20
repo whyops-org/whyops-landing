@@ -7,6 +7,7 @@ import { resolveSitePseoPageByPath } from "@/lib/pseo/site";
 import type { PseoPage } from "@/lib/pseo/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 
 export const revalidate = 43200;
 
@@ -21,39 +22,22 @@ type BreadcrumbItem = {
   href?: string;
 };
 
-async function filterResolvableLinks<T extends { url: string }>(items: T[]): Promise<T[]> {
-  const checks = await Promise.all(
-    items.map(async (item) => {
-      const pathname = new URL(item.url).pathname;
-      const resolved = await resolveSitePseoPageByPath(pathname);
-      return resolved ? item : null;
-    }),
-  );
-
-  return checks.reduce<T[]>((accumulator, item) => {
-    if (item) {
-      accumulator.push(item);
-    }
-
-    return accumulator;
-  }, []);
+function humanizeSegment(segment: string): string {
+  return segment
+    .replace(/^for-/, "")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-async function buildPageBreadcrumbs(page: PseoPage): Promise<BreadcrumbItem[]> {
+function buildPageBreadcrumbs(page: PseoPage): BreadcrumbItem[] {
   const pathname = new URL(page.url).pathname;
   const segments = pathname.split("/").filter(Boolean);
   const breadcrumbs: BreadcrumbItem[] = [{ label: "Home", href: "/" }];
 
   for (let index = 0; index < segments.length - 1; index += 1) {
     const href = `/${segments.slice(0, index + 1).join("/")}`;
-    const resolved = await resolveSitePseoPageByPath(href);
-
-    if (!resolved || resolved.url === page.url) {
-      continue;
-    }
-
     breadcrumbs.push({
-      label: resolved.content.h1,
+      label: humanizeSegment(segments[index]),
       href,
     });
   }
@@ -63,19 +47,6 @@ async function buildPageBreadcrumbs(page: PseoPage): Promise<BreadcrumbItem[]> {
   });
 
   return breadcrumbs;
-}
-
-async function buildRenderablePage(page: PseoPage): Promise<PseoPage> {
-  const [internalLinks, relatedPages] = await Promise.all([
-    filterResolvableLinks(page.internal_links),
-    filterResolvableLinks(page.related_pages),
-  ]);
-
-  return {
-    ...page,
-    internal_links: internalLinks,
-    related_pages: relatedPages,
-  };
 }
 
 function buildBreadcrumbList(page: PseoPage, breadcrumbs: BreadcrumbItem[]) {
@@ -142,10 +113,14 @@ function buildPseoGraph(page: PseoPage, breadcrumbs: BreadcrumbItem[]) {
   };
 }
 
+const getResolvedPseoPage = cache((pathname: string) =>
+  resolveSitePseoPageByPath(pathname),
+);
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const pathname = `/${slug.join("/")}`;
-  const page = await resolveSitePseoPageByPath(pathname);
+  const page = await getResolvedPseoPage(pathname);
 
   if (!page) {
     return {
@@ -181,21 +156,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function PseoCatchAllPage({ params }: PageProps) {
   const { slug } = await params;
   const pathname = `/${slug.join("/")}`;
-  const page = await resolveSitePseoPageByPath(pathname);
+  const page = await getResolvedPseoPage(pathname);
 
   if (!page) {
     notFound();
   }
 
-  const [breadcrumbs, renderablePage] = await Promise.all([
-    buildPageBreadcrumbs(page),
-    buildRenderablePage(page),
-  ]);
+  const breadcrumbs = buildPageBreadcrumbs(page);
 
   return (
     <PseoLayout>
       <JsonLd data={buildPseoGraph(page, breadcrumbs)} />
-      <PseoArticle page={renderablePage} breadcrumbs={breadcrumbs} />
+      <PseoArticle page={page} breadcrumbs={breadcrumbs} />
     </PseoLayout>
   );
 }
