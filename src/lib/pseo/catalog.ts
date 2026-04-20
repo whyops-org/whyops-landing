@@ -33,6 +33,10 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
         "inspect tool calls",
         "replay failures",
         "explain decision paths",
+        "track context drift",
+        "inspect multi-agent handoffs",
+        "diff agent state",
+        "verify skipped instructions",
       ],
       industries: ["SaaS", "Fintech", "Healthcare", "Developer tools"],
       painPoints: [
@@ -119,6 +123,10 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
         "evaluate production quality",
         "compare prompt variants",
         "review outputs with humans",
+        "score workflow reliability",
+        "prioritize human review",
+        "adjudicate evaluator disagreements",
+        "compare release candidates",
       ],
       industries: ["SaaS", "Enterprise AI", "Data platforms"],
       painPoints: [
@@ -192,6 +200,10 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
         "control spend",
         "set provider fallbacks",
         "track provider latency",
+        "govern model access",
+        "cache repeated prompts",
+        "balance latency and cost",
+        "segment traffic by tenant",
       ],
       industries: ["SaaS", "Developer tools", "Platform teams"],
       painPoints: [
@@ -261,6 +273,10 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
         "screen for PII",
         "flag risky outputs",
         "support audit reviews",
+        "detect jailbreak attempts",
+        "restrict unsafe tool use",
+        "review intervention evidence",
+        "enforce approval gates",
       ],
       industries: ["Healthcare", "Fintech", "Enterprise SaaS"],
       painPoints: [
@@ -301,6 +317,34 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
     },
   ],
   tools: [
+    {
+      name: "WhyOps",
+      category: "AI Agent Observability",
+      description:
+        "WhyOps focuses on decision-aware observability for agent workflows with replay, state inspection, and multi-agent debugging.",
+      pricingModel: "Platform pricing",
+      strengths: ["decision context", "production replay", "state diffing"],
+      weaknesses: ["narrower than broad AI platforms", "best fit is debugging-first teams"],
+      bestFor: ["agent teams that need replayable evidence", "engineering orgs debugging multi-step failures"],
+      useCases: [
+        "trace agent runs",
+        "replay failures",
+        "track context drift",
+        "inspect multi-agent handoffs",
+      ],
+      integrations: ["TypeScript SDK", "OpenAI-compatible APIs", "tool wrappers"],
+      supportedFileFormats: ["JSON", "Markdown", "CSV"],
+      directoryTags: ["decision context", "replay", "agent debugging"],
+      verifiedFacts: [
+        "WhyOps positions itself around decision-aware observability for AI agents.",
+        "Its site messaging highlights state tracking, replay, and multi-agent visibility.",
+      ],
+      milestones: [
+        "Defined a debugging-first angle for agent observability.",
+        "Connected replay, decision reasoning, and visual debugging in one product story.",
+      ],
+      website: "https://whyops.com",
+    },
     {
       name: "LangSmith",
       category: "AI Agent Observability",
@@ -463,6 +507,33 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
       website: "https://mlflow.org",
     },
     {
+      name: "Humanloop",
+      category: "AI Evaluation",
+      description:
+        "Humanloop focuses on prompt management, evaluation workflows, and human-in-the-loop review for production AI systems.",
+      pricingModel: "Platform pricing",
+      strengths: ["prompt workflows", "evaluation programs", "human review loops"],
+      weaknesses: ["teams still need broader observability coverage", "process quality depends on disciplined rubric design"],
+      bestFor: ["teams mixing evaluation and review workflows", "product orgs operationalizing prompt iteration"],
+      useCases: [
+        "compare prompt variants",
+        "review outputs with humans",
+        "prioritize human review",
+      ],
+      integrations: ["Python", "SDKs", "review workflows"],
+      supportedFileFormats: ["JSON", "CSV", "Markdown"],
+      directoryTags: ["evals", "human review", "prompts"],
+      verifiedFacts: [
+        "Humanloop positions around prompt management and evaluation workflows.",
+        "Its product story connects human review with production AI iteration.",
+      ],
+      milestones: [
+        "Built a product story around human-in-the-loop AI quality.",
+        "Expanded from prompt tooling into broader evaluation workflows.",
+      ],
+      website: "https://humanloop.com",
+    },
+    {
       name: "Helicone",
       category: "AI Gateway",
       description:
@@ -499,6 +570,60 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
       supportedFileFormats: ["JSON", "CSV", "YAML"],
       directoryTags: ["gateway", "governance", "routing"],
       website: "https://portkey.ai",
+    },
+    {
+      name: "OpenRouter",
+      category: "AI Gateway",
+      description:
+        "OpenRouter provides a unified routing layer across many model providers with normalization, fallbacks, and usage control.",
+      pricingModel: "Usage-based",
+      strengths: ["broad provider access", "routing flexibility", "centralized request handling"],
+      weaknesses: ["governance depth depends on surrounding tooling", "platform teams still need explicit traffic policy"],
+      bestFor: ["teams comparing many models quickly", "products standardizing on one model access layer"],
+      useCases: [
+        "route model requests",
+        "set provider fallbacks",
+        "balance latency and cost",
+      ],
+      integrations: ["OpenAI-compatible APIs", "multiple model providers", "HTTP APIs"],
+      supportedFileFormats: ["JSON", "NDJSON", "CSV"],
+      directoryTags: ["gateway", "routing", "providers"],
+      verifiedFacts: [
+        "OpenRouter positions itself as a unified API for many model providers.",
+        "Its value story centers on provider choice and simplified routing.",
+      ],
+      milestones: [
+        "Built a clear multi-provider routing narrative.",
+        "Expanded adoption through a unified model access layer.",
+      ],
+      website: "https://openrouter.ai",
+    },
+    {
+      name: "LiteLLM",
+      category: "AI Gateway",
+      description:
+        "LiteLLM helps teams normalize model calls across providers while adding routing, fallback, and proxy patterns.",
+      pricingModel: "Open source plus hosted options",
+      strengths: ["provider normalization", "proxy flexibility", "fallback support"],
+      weaknesses: ["teams may need extra governance layers", "operational polish depends on implementation maturity"],
+      bestFor: ["engineering teams building their own gateway layer", "multi-provider stacks that want SDK compatibility"],
+      useCases: [
+        "route model requests",
+        "set provider fallbacks",
+        "govern model access",
+      ],
+      integrations: ["OpenAI-compatible SDKs", "provider APIs", "proxy deployments"],
+      supportedFileFormats: ["JSON", "YAML", "CSV"],
+      directoryTags: ["gateway", "proxy", "fallbacks"],
+      verifiedFacts: [
+        "LiteLLM is used to standardize model calls across providers.",
+        "Its messaging emphasizes proxy and fallback workflows.",
+      ],
+      milestones: [
+        "Built adoption through provider normalization for developers.",
+        "Expanded from SDK compatibility into gateway and proxy patterns.",
+      ],
+      website: "https://litellm.ai",
     },
     {
       name: "Fiddler",
@@ -552,6 +677,33 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
       supportedFileFormats: ["JSON", "CSV", "Parquet"],
       directoryTags: ["enterprise", "governance", "monitoring"],
       website: "https://azure.microsoft.com",
+    },
+    {
+      name: "Lakera Guard",
+      category: "AI Guardrails",
+      description:
+        "Lakera Guard focuses on runtime AI security checks such as prompt injection detection, policy enforcement, and unsafe interaction blocking.",
+      pricingModel: "Platform pricing",
+      strengths: ["runtime protection", "prompt-attack detection", "security-focused guardrails"],
+      weaknesses: ["teams still need broader observability context", "product value depends on where checks are inserted"],
+      bestFor: ["security-conscious AI teams", "products defending against prompt attacks"],
+      useCases: [
+        "detect jailbreak attempts",
+        "restrict unsafe tool use",
+        "flag risky outputs",
+      ],
+      integrations: ["API middleware", "application backends", "security workflows"],
+      supportedFileFormats: ["JSON", "CSV", "NDJSON"],
+      directoryTags: ["guardrails", "security", "prompt injection"],
+      verifiedFacts: [
+        "Lakera Guard positions around AI security and prompt attack defense.",
+        "Its messaging emphasizes runtime protection and policy enforcement.",
+      ],
+      milestones: [
+        "Built a clear runtime AI security narrative.",
+        "Expanded product messaging around prompt attack defense and safeguards.",
+      ],
+      website: "https://lakera.ai",
     },
   ],
   locations: [
@@ -862,6 +1014,94 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
       ],
       industries: ["Data platforms", "Applied AI"],
       recommendedUseCases: ["run regression suites", "review benchmark datasets", "compare experiments"],
+    },
+    {
+      name: "Engineering Manager",
+      role: "Engineering Manager",
+      description:
+        "Engineering managers look for categories that improve delivery confidence, shorten debugging cycles, and create evidence they can use in release decisions.",
+      painPoints: [
+        "AI incidents consume senior engineering time unpredictably",
+        "Teams struggle to explain release risk in workflow terms",
+        "Tooling decisions create sprawl when each team adopts independently",
+      ],
+      goals: ["ship with confidence", "reduce debugging drag", "standardize useful workflows"],
+      benefits: [
+        "Clearer release evidence",
+        "More predictable incident review",
+        "Better tradeoff visibility across teams",
+      ],
+      industries: ["SaaS", "Developer tools", "Enterprise software"],
+      recommendedUseCases: ["replay failures", "evaluate production quality", "track context drift"],
+    },
+    {
+      name: "Support Operations Lead",
+      role: "Support Operations Lead",
+      description:
+        "Support operations leads care about whether AI systems produce reliable answers, escalate safely, and give the team enough context to review failures quickly.",
+      painPoints: [
+        "Borderline AI outputs still need manual review",
+        "Escalations are hard to audit after the fact",
+        "Failures affect support quality before root cause is clear",
+      ],
+      goals: ["protect customer experience", "improve review efficiency", "reduce repeat failures"],
+      benefits: [
+        "Faster review loops",
+        "Better escalation evidence",
+        "More reliable workflow automation",
+      ],
+      industries: ["SaaS", "Customer support", "Services"],
+      recommendedUseCases: [
+        "review outputs with humans",
+        "prioritize human review",
+        "replay failures",
+      ],
+    },
+    {
+      name: "Compliance Officer",
+      role: "Compliance Officer",
+      description:
+        "Compliance officers evaluate AI tooling through policy evidence, reviewability, and the ability to explain how risky behavior was blocked or escalated.",
+      painPoints: [
+        "AI controls are hard to audit when policy lives in code only",
+        "Risk events need clearer evidence trails",
+        "Teams need enforcement logic that survives cross-functional review",
+      ],
+      goals: ["strengthen audit readiness", "improve policy evidence", "reduce control gaps"],
+      benefits: [
+        "Clearer intervention records",
+        "More defensible control reviews",
+        "Better coordination with security and ops",
+      ],
+      industries: ["Healthcare", "Fintech", "Enterprise SaaS"],
+      recommendedUseCases: [
+        "support audit reviews",
+        "review intervention evidence",
+        "enforce approval gates",
+      ],
+    },
+    {
+      name: "AI Product Lead",
+      role: "AI Product Lead",
+      description:
+        "AI product leads care about whether agent and model workflows can be improved deliberately rather than by guesswork across launches and iterations.",
+      painPoints: [
+        "Teams cannot see which workflow changes actually improved quality",
+        "Prompt, gateway, and guardrail decisions are hard to compare together",
+        "Operational feedback arrives too late to shape product decisions",
+      ],
+      goals: ["improve release quality", "tighten iteration loops", "justify infrastructure investment"],
+      benefits: [
+        "Clearer tradeoffs across quality, speed, and control",
+        "Better evidence for prioritization",
+        "More reusable workflow learnings",
+      ],
+      industries: ["SaaS", "Applied AI", "Enterprise software"],
+      recommendedUseCases: [
+        "compare release candidates",
+        "inspect multi-agent handoffs",
+        "balance latency and cost",
+      ],
     },
   ],
   file_formats: [
@@ -1310,6 +1550,168 @@ export const whyopsPseoCatalog: PseoDatasetInput = {
       uniqueInsight:
         "Braintrust is strongest where benchmark discipline matters, which makes it a useful contrast against pure observability tools.",
       website: "https://www.braintrust.dev",
+    },
+    {
+      name: "AgentOps",
+      role: "Product",
+      company: "AgentOps",
+      summary:
+        "AgentOps is positioned around agent-first observability with tracing and production monitoring for agentic systems.",
+      verifiedFacts: [
+        "AgentOps messaging centers on observability for agentic systems.",
+        "Its public story emphasizes monitoring and tracing agent behavior.",
+      ],
+      milestones: [
+        "Built a clear agent-first observability narrative.",
+        "Connected production monitoring with agent reliability workflows.",
+      ],
+      uniqueInsight:
+        "AgentOps is a useful comparison when the buyer wants operational visibility but not a broad platform story.",
+      website: "https://www.agentops.ai",
+    },
+    {
+      name: "Langfuse",
+      role: "Product",
+      company: "Langfuse",
+      summary:
+        "Langfuse is positioned around open-source-friendly tracing, prompts, evals, and metrics for LLM applications.",
+      verifiedFacts: [
+        "Langfuse documentation describes observability for LLM applications.",
+        "Its product messaging covers traces, prompts, evals, and metrics.",
+      ],
+      milestones: [
+        "Built strong open-source traction in LLM observability.",
+        "Expanded from traces into broader prompt and evaluation workflows.",
+      ],
+      uniqueInsight:
+        "Langfuse is strongest where teams want flexibility and open tooling, but still need their own operating discipline.",
+      website: "https://langfuse.com",
+    },
+    {
+      name: "Phoenix",
+      role: "Product",
+      company: "Arize",
+      summary:
+        "Phoenix is positioned as an observability and evaluation workflow for LLM and agent applications with an open-source entry point.",
+      verifiedFacts: [
+        "Phoenix is positioned by Arize for AI observability and evaluation.",
+        "Its messaging includes tracing for LLM and agent applications.",
+      ],
+      milestones: [
+        "Connected tracing and evaluation in one workflow.",
+        "Expanded product positioning into LLM and agent monitoring.",
+      ],
+      uniqueInsight:
+        "Phoenix is a useful contrast when the buyer wants tracing plus eval depth with an open-source angle.",
+      website: "https://arize.com/phoenix",
+    },
+    {
+      name: "Humanloop",
+      role: "Product",
+      company: "Humanloop",
+      summary:
+        "Humanloop is positioned around prompt management, evaluation, and human review workflows for production AI teams.",
+      verifiedFacts: [
+        "Humanloop messaging ties prompt workflows to evaluation programs.",
+        "Its product story includes human review and production AI iteration.",
+      ],
+      milestones: [
+        "Built product positioning around prompt and review workflows.",
+        "Expanded into evaluation and operational quality narratives.",
+      ],
+      uniqueInsight:
+        "Humanloop is strongest where teams need evaluation plus review operations, not just benchmark scoring.",
+      website: "https://humanloop.com",
+    },
+    {
+      name: "Helicone",
+      role: "Product",
+      company: "Helicone",
+      summary:
+        "Helicone is positioned around AI gateway workflows with logging, analytics, caching, and reliability controls for model traffic.",
+      verifiedFacts: [
+        "Helicone positions itself around an AI gateway and observability workflow.",
+        "Its docs emphasize logging, analytics, caching, and routing controls.",
+      ],
+      milestones: [
+        "Built from request analytics into broader gateway operations.",
+        "Expanded product messaging around reliability and provider control.",
+      ],
+      uniqueInsight:
+        "Helicone is most useful when a team wants one gateway layer to centralize traffic policy and usage analytics.",
+      website: "https://www.helicone.ai",
+    },
+    {
+      name: "Portkey",
+      role: "Product",
+      company: "Portkey",
+      summary:
+        "Portkey is positioned as a gateway and control plane for teams managing multi-provider model traffic.",
+      verifiedFacts: [
+        "Portkey messaging emphasizes gateway workflows and centralized governance.",
+        "Its public story focuses on reliability and provider control.",
+      ],
+      milestones: [
+        "Built product positioning around centralized AI traffic control.",
+        "Expanded the narrative into governance and reliability workflows.",
+      ],
+      uniqueInsight:
+        "Portkey is strongest where platform teams want centralized control before downstream observability depth.",
+      website: "https://portkey.ai",
+    },
+    {
+      name: "OpenRouter",
+      role: "Product",
+      company: "OpenRouter",
+      summary:
+        "OpenRouter is positioned as a unified access layer across many model providers with routing flexibility and simplified integration.",
+      verifiedFacts: [
+        "OpenRouter positions itself as a unified API for many model providers.",
+        "Its value story centers on provider choice and simplified routing.",
+      ],
+      milestones: [
+        "Built a clear multi-provider access narrative.",
+        "Expanded adoption through a unified model access layer.",
+      ],
+      uniqueInsight:
+        "OpenRouter is strongest where teams want broad provider choice quickly and can layer deeper governance around it later.",
+      website: "https://openrouter.ai",
+    },
+    {
+      name: "Fiddler",
+      role: "Product",
+      company: "Fiddler",
+      summary:
+        "Fiddler is positioned around AI monitoring, guardrails, and governance for enterprise and regulated environments.",
+      verifiedFacts: [
+        "Fiddler positions around agentic observability and monitoring.",
+        "Its product story emphasizes governance and enterprise AI controls.",
+      ],
+      milestones: [
+        "Expanded from model monitoring into agentic observability narratives.",
+        "Strengthened enterprise positioning around governance and guardrails.",
+      ],
+      uniqueInsight:
+        "Fiddler is most relevant where buyers want guardrails and enterprise governance in the same evaluation.",
+      website: "https://www.fiddler.ai",
+    },
+    {
+      name: "Lakera Guard",
+      role: "Product",
+      company: "Lakera",
+      summary:
+        "Lakera Guard is positioned around runtime AI security with prompt attack detection, policy enforcement, and interaction protection.",
+      verifiedFacts: [
+        "Lakera Guard positions around AI security and prompt attack defense.",
+        "Its messaging emphasizes runtime protection and policy enforcement.",
+      ],
+      milestones: [
+        "Built a clear runtime AI security narrative.",
+        "Expanded product messaging around prompt attack defense and safeguards.",
+      ],
+      uniqueInsight:
+        "Lakera Guard is strongest where a buyer needs runtime protection against prompt attacks, not just broad policy messaging.",
+      website: "https://lakera.ai",
     },
   ],
 };
