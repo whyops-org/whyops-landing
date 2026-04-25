@@ -841,7 +841,7 @@ function buildCurationPages(dataset: NormalizedDataset, basePath: string): Draft
 
     categoryServices(category).forEach((service) => {
       const serviceTools = shortlistToolsForService(tools, service, 5);
-      if (serviceTools.length < 3) {
+      if (serviceTools.length === 0) {
         return;
       }
 
