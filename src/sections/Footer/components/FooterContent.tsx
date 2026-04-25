@@ -3,6 +3,7 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { FooterBrand } from "@/sections/Footer/components/FooterBrand";
 import { FooterLinks } from "@/sections/Footer/components/FooterLinks";
 import { env } from '@/lib/env';
+import { servicePages } from "@/lib/seo/priority-pages";
 
 export const FooterContent = () => {
   const { ref, isVisible } = useScrollReveal(0.1);
@@ -25,6 +26,10 @@ export const FooterContent = () => {
             { href: "#faq", text: "FAQ" },
             { href: "#platform", text: "Platform" },
           ]}
+        />
+        <FooterLinks
+          title="Services"
+          links={servicePages.map((page) => ({ href: page.href, text: page.label }))}
         />
         <FooterLinks
           title="Company"

@@ -4,6 +4,7 @@ import { Citation } from '@/components/Citation';
 import { commonClasses } from '@/design-system';
 import { content } from '@/design-system/content';
 import { heroEvidence } from '@/lib/evidence';
+import { servicePages } from '@/lib/seo/priority-pages';
 import { motion } from 'framer-motion';
 
 export const HeroContent = () => {
@@ -44,6 +45,22 @@ export const HeroContent = () => {
             </span>
           </span>
         </a>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="mt-5 flex w-full flex-wrap gap-3"
+      >
+        {servicePages.map((page) => (
+          <a
+            key={page.href}
+            href={page.href}
+            className="rounded-sm border border-dashed border-ds-border px-3 py-2 text-sm font-medium text-ds-text-primary transition-opacity hover:opacity-70 dark:border-ds-dark-border dark:text-ds-dark-text-primary"
+          >
+            {page.label}
+          </a>
+        ))}
       </motion.div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}

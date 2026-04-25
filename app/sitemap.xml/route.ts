@@ -16,6 +16,7 @@ export async function GET(request: Request) {
 
   // Flat list: static + each pSEO leaf + blog — all are <urlset> sitemaps
   const entries = [
+    "/sitemap-pages.xml",
     "/sitemaps/static.xml",
     ...pseoLeafPaths,
     "/sitemaps/blog.xml",

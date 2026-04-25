@@ -1,18 +1,17 @@
 export const dynamic = 'force-dynamic';
 
 import type { MetadataRoute } from "next";
+import { priorityPages } from "@/lib/seo/priority-pages";
 import { NextResponse } from "next/server";
 
 export function GET(request: Request) {
   const baseUrl = new URL(request.url).origin;
-  const entries: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: "2026-03-25",
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-  ];
+  const entries: MetadataRoute.Sitemap = priorityPages.map((page) => ({
+    url: `${baseUrl}${page.href === "/" ? "" : page.href}`,
+    lastModified: new Date().toISOString().slice(0, 10),
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+  }));
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
