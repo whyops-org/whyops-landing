@@ -1,12 +1,12 @@
 export const dynamic = 'force-dynamic';
 
 import type { MetadataRoute } from "next";
-import { priorityPages } from "@/lib/seo/priority-pages";
+import { curatedPriorityPages } from "@/lib/seo/priority-pages";
 import { NextResponse } from "next/server";
 
 export function GET(request: Request) {
   const baseUrl = new URL(request.url).origin;
-  const entries: MetadataRoute.Sitemap = priorityPages.map((page) => ({
+  const entries: MetadataRoute.Sitemap = curatedPriorityPages.map((page) => ({
     url: `${baseUrl}${page.href === "/" ? "" : page.href}`,
     lastModified: new Date().toISOString().slice(0, 10),
     changeFrequency: page.changeFrequency,
