@@ -1,5 +1,6 @@
 import { brand, env } from "@/lib/env";
 import { buildCategoryOverviewPageSeeds } from "@/lib/pseo/category-overview-pages";
+import { buildCategoryServicePageSeeds } from "@/lib/pseo/category-service-pages";
 import { attachDraftLinks } from "@/lib/pseo/link-graph";
 import { dedupe, slugify } from "@/lib/pseo/normalize";
 import type {
@@ -2980,6 +2981,9 @@ function buildProfilePages(dataset: NormalizedDataset, basePath: string): DraftP
 function buildAllCandidates(dataset: NormalizedDataset, basePath: string): DraftPage[] {
   return [
     ...buildCategoryOverviewPageSeeds(dataset, basePath).map((seed) =>
+      createPageDraft(seed.page, seed.topicKey, seed.entityKeys),
+    ),
+    ...buildCategoryServicePageSeeds(dataset, basePath).map((seed) =>
       createPageDraft(seed.page, seed.topicKey, seed.entityKeys),
     ),
     ...buildTemplatePages(dataset, basePath),

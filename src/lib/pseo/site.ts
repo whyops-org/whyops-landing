@@ -440,7 +440,7 @@ async function resolvePageFromCandidateShard(
   pathname: string,
   shard: PseoManifestShard,
 ): Promise<PseoPage | null> {
-  if (!isPrebakedShardId(shard.id)) {
+  const resolveDynamically = async () => {
     const snapshot = await getCachedSnapshotContext();
     if (snapshot) {
       return resolveDynamicPageFromShard(snapshot.normalized_dataset, shard, pathname);
@@ -448,10 +448,23 @@ async function resolvePageFromCandidateShard(
 
     const context = await getCachedSitePseoContext();
     return resolveDynamicPageFromShard(context.normalized_dataset, shard, pathname);
+  };
+
+  if (!isPrebakedShardId(shard.id)) {
+    return resolveDynamically();
   }
 
   const pages = await getMemoryCachedShardPages(shard.id);
-  return pages.find((page) => pathnameFromPage(page) === normalizePathname(pathname)) || null;
+  const matchedPage =
+    pages.find((page) => pathnameFromPage(page) === normalizePathname(pathname)) || null;
+
+  if (matchedPage) {
+    return matchedPage;
+  }
+
+  // Some core URLs are intentionally omitted from the prebaked validated set.
+  // Fall back to on-demand resolution so direct requests still work for those routes.
+  return resolveDynamically();
 }
 
 export function shardIdToSitemapSlug(shardId: string): string {
