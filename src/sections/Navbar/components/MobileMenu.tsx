@@ -1,14 +1,18 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { colors, typography, animations, borders } from '@/design-system';
+import { typography, animations, borders } from '@/design-system';
 import { content } from '@/design-system/content';
 
 type MobileMenuProps = {
   isOpen: boolean;
   onClose: () => void;
+  links: ReadonlyArray<{
+    href: string;
+    text: string;
+  }>;
 };
 
-export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
+export const MobileMenu = ({ isOpen, onClose, links }: MobileMenuProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -41,7 +45,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                 </button>
               </div>
               <nav className="flex flex-col p-4 gap-2">
-                {content.navigation.links.map((link) => (
+                {links.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}

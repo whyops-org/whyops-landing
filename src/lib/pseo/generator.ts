@@ -3120,6 +3120,33 @@ function orderBatch(pages: DraftPage[]): DraftPage[] {
   return ordered;
 }
 
+function isRecoverableCategoryRootPage(page: DraftPage): boolean {
+  const pathname = new URL(page.url).pathname;
+  return (
+    /^\/best\/[^/]+-tools$/.test(pathname) ||
+    /^\/examples\/[^/]+$/.test(pathname) ||
+    /^\/directory\/[^/]+$/.test(pathname)
+  );
+}
+
+function recoverEssentialCategoryRoots(
+  ordered: DraftPage[],
+  rawCandidates: DraftPage[],
+): DraftPage[] {
+  const existingUrls = new Set(ordered.map((page) => page.url));
+  const recovered = attachLinksLenient(rawCandidates).filter(
+    (page) =>
+      isRecoverableCategoryRootPage(page) &&
+      !existingUrls.has(page.url) &&
+      page.internal_links.length >= 5 &&
+      page.related_pages.length >= 3 &&
+      page.word_count >= minimumWordThreshold(page.playbook_type) &&
+      page.content.faq.length >= 3,
+  );
+
+  return recovered.length ? orderBatch([...ordered, ...recovered]) : ordered;
+}
+
 export function generatePseoValidatedSet(
   dataset: NormalizedDataset,
   request: Pick<PseoBatchRequest, "basePath" | "includePlaybooks" | "targetPages">,
@@ -3149,7 +3176,7 @@ export function generatePseoValidatedSet(
   const stabilizationResult = stabilizeLinkedCandidates(rawCandidates);
   const linkedCandidates = stabilizationResult.linkedCandidates;
   const validCandidates = stabilizationResult.validCandidates;
-  const ordered = orderBatch(validCandidates);
+  const ordered = recoverEssentialCategoryRoots(orderBatch(validCandidates), rawCandidates);
   const uniquePlaybooks = dedupe(ordered.map((page) => page.playbook_type)) as PlaybookType[];
 
   if (ordered.length === 0) {

@@ -3,12 +3,20 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
+import { content } from '@/design-system/content';
 import { NavbarLogo } from "@/sections/Navbar/components/NavbarLogo";
 import { DesktopNavLinks } from "@/sections/Navbar/components/DesktopNavLinks";
 import { NavbarActions } from "@/sections/Navbar/components/NavbarActions";
 import { MobileMenu } from "@/sections/Navbar/components/MobileMenu";
 
-export const Navbar = () => {
+type NavbarProps = {
+  links?: ReadonlyArray<{
+    href: string;
+    text: string;
+  }>;
+};
+
+export const Navbar = ({ links = content.navigation.links }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -22,7 +30,7 @@ export const Navbar = () => {
         <div className="box-border caret-transparent max-w-[1400px] w-full border-ds-border dark:border-ds-dark-border mx-auto border-l border-r border-dashed">
           <div className="items-center box-border caret-transparent flex justify-between max-w-screen-2xl w-full mx-auto p-4">
             <NavbarLogo />
-            <DesktopNavLinks />
+            <DesktopNavLinks links={links} />
             <div className="flex items-center gap-4">
               <div className="hidden md:flex">
                 <NavbarActions />
@@ -37,7 +45,11 @@ export const Navbar = () => {
           </div>
         </div>
       </motion.div>
-      <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        links={links}
+      />
     </>
   );
 };

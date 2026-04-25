@@ -1,10 +1,16 @@
-import { colors, typography, animations } from '@/design-system';
-import { content } from '@/design-system/content';
+import { animations } from '@/design-system';
 
-export const DesktopNavLinks = () => {
+type DesktopNavLinksProps = {
+  links: ReadonlyArray<{
+    href: string;
+    text: string;
+  }>;
+};
+
+export const DesktopNavLinks = ({ links }: DesktopNavLinksProps) => {
   return (
     <div className="items-center box-border caret-transparent hidden min-h-0 min-w-0 md:flex md:min-h-[auto] md:min-w-[auto]">
-      {content.navigation.links.map((link) => (
+      {links.map((link) => (
         <a
           key={link.href}
           href={link.href}
