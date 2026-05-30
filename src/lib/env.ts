@@ -2,6 +2,8 @@ export const env = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://whyops.com',
   hashnodeHost: process.env.NEXT_PUBLIC_HASHNODE_HOST || '',
   hashnodePat: process.env.HASHNODE_PAT || '',
+  hashnodeApiUrl:
+    process.env.HASHNODE_API_URL || 'https://gql-beta.hashnode.com',
   countriesApi:
     process.env.NEXT_PUBLIC_COUNTRIES_API ||
     "https://restcountries.com/v3.1/all?fields=name,cca2,cca3,region,subregion,currencies,population,area,capital,languages",

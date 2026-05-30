@@ -6,13 +6,19 @@ import type {
   BlogPostsResponse,
 } from '@/lib/types/blog';
 
-const HASHNODE_API_URL = 'https://gql.hashnode.com';
+type GraphQLResponse<T> = {
+  data?: T;
+  errors?: Array<{
+    message: string;
+    extensions?: { code?: string };
+  }>;
+};
 
 async function hashnodeQuery<T>(
   query: string,
   variables: Record<string, unknown>,
 ): Promise<T> {
-  const response = await fetch(HASHNODE_API_URL, {
+  const response = await fetch(env.hashnodeApiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -26,12 +32,29 @@ async function hashnodeQuery<T>(
     throw new Error(`Hashnode API error: ${response.status}`);
   }
 
-  const json = await response.json();
-  if (json.errors?.length) {
-    throw new Error(json.errors[0].message);
+  const body = await response.text();
+  let json: GraphQLResponse<T>;
+
+  try {
+    json = JSON.parse(body) as GraphQLResponse<T>;
+  } catch {
+    throw new Error(
+      `Hashnode API returned non-JSON from ${env.hashnodeApiUrl}`,
+    );
   }
 
-  return json.data as T;
+  if (json.errors?.length) {
+    const { message, extensions } = json.errors[0];
+    throw new Error(
+      extensions?.code ? `${message} (${extensions.code})` : message,
+    );
+  }
+
+  if (!json.data) {
+    throw new Error('Hashnode API returned no data');
+  }
+
+  return json.data;
 }
 
 const GET_PUBLICATION_POSTS = `
